@@ -18,11 +18,11 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
     svg.selectAll('*').remove();
 
     const chartData = [
-      { label: 'Critical', key: 'critical', value: data.critical || 0, color: '#f43f5e' },
-      { label: 'High', key: 'high', value: data.high || 0, color: '#fb923c' },
-      { label: 'Medium', key: 'medium', value: data.medium || 0, color: '#fbbf24' },
-      { label: 'Low', key: 'low', value: data.low || 0, color: '#38bdf8' },
-      { label: 'Info', key: 'informational', value: data.informational || 0, color: '#94a3b8' },
+      { label: 'Critical', key: 'critical', value: data.critical || 0, color: '#DC2626' },
+      { label: 'High', key: 'high', value: data.high || 0, color: '#EA580C' },
+      { label: 'Medium', key: 'medium', value: data.medium || 0, color: '#D97706' },
+      { label: 'Low', key: 'low', value: data.low || 0, color: '#2563EB' },
+      { label: 'Info', key: 'informational', value: data.informational || 0, color: '#94A3B8' },
     ].filter(d => d.value > 0);
 
     const total = d3.sum(chartData, d => d.value);
@@ -40,14 +40,14 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
       g.append('circle')
         .attr('r', radius)
         .attr('fill', 'none')
-        .attr('stroke', '#334155')
+        .attr('stroke', '#E5EAE6')
         .attr('stroke-width', 16)
         .attr('stroke-dasharray', '4 4');
 
       g.append('text')
         .attr('text-anchor', 'middle')
         .attr('dy', '0.3em')
-        .attr('fill', '#64748b')
+        .attr('fill', '#64716A')
         .attr('font-size', '13px')
         .text('No Findings');
       return;
@@ -76,8 +76,7 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
       .append('path')
       .attr('d', arc)
       .attr('fill', d => d.data.color)
-      .attr('class', 'transition-all duration-200 cursor-pointer')
-      .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))');
+      .attr('class', 'transition-all duration-200 cursor-pointer');
 
     // Hover interactions
     paths
@@ -91,7 +90,7 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
           const pct = Math.round((d.data.value / total) * 100);
           tooltipRef.current.innerHTML = `
             <div class="font-bold text-xs" style="color: ${d.data.color}">${d.data.label}</div>
-            <div class="text-sm font-mono text-white">${d.data.value} findings (${pct}%)</div>
+            <div class="text-sm font-mono text-[#17211D] font-bold">${d.data.value} findings (${pct}%)</div>
           `;
           tooltipRef.current.style.opacity = '1';
         }
@@ -120,7 +119,7 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
     g.append('text')
       .attr('text-anchor', 'middle')
       .attr('dy', '-0.2em')
-      .attr('fill', '#f8fafc')
+      .attr('fill', '#17211D')
       .attr('font-size', '24px')
       .attr('font-weight', '700')
       .attr('font-family', 'monospace')
@@ -129,7 +128,7 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
     g.append('text')
       .attr('text-anchor', 'middle')
       .attr('dy', '1.3em')
-      .attr('fill', '#94a3b8')
+      .attr('fill', '#64716A')
       .attr('font-size', '11px')
       .attr('font-weight', '500')
       .text('Total Issues');
@@ -141,7 +140,7 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
       <svg ref={svgRef} width={width} height={height} className="overflow-visible" />
       <div
         ref={tooltipRef}
-        className="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-20 bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 shadow-xl text-left"
+        className="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-20 bg-white border border-[#E5EAE6] rounded-xl px-2.5 py-1.5 shadow-lg text-left"
         style={{ minWidth: '90px' }}
       />
     </div>

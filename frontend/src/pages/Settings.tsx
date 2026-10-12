@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import {
   Settings as SettingsIcon,
-  Shield,
   Activity,
-  Database,
   Sparkles,
   Trash2,
   RefreshCw,
   AlertTriangle,
   CheckCircle2,
   Lock,
-  Radio
 } from 'lucide-react';
 
 export const Settings: React.FC = () => {
@@ -84,8 +81,8 @@ export const Settings: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] text-slate-400">
-        <RefreshCw className="w-8 h-8 animate-spin text-emerald-400 mb-3" />
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-[#64716A]">
+        <RefreshCw className="w-8 h-8 animate-spin text-[#167653] mb-3" />
         <span className="text-sm font-medium">Loading preferences & health telemetry...</span>
       </div>
     );
@@ -95,67 +92,67 @@ export const Settings: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Title */}
       <div>
-        <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-          <SettingsIcon className="w-5 h-5 text-emerald-400" />
+        <h2 className="text-xl font-bold text-[#17211D] flex items-center gap-2">
+          <SettingsIcon className="w-5 h-5 text-[#167653]" />
           Scanner Engine Settings & System Posture
         </h2>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-[#64716A] mt-1">
           Configure security policy constraints, SSRF protections, system health, and telemetry seed controls.
         </p>
       </div>
 
       {successMsg && (
-        <div className="p-3 bg-emerald-950/60 border border-emerald-800 text-emerald-300 rounded-lg text-xs flex items-center justify-between">
+        <div className="p-3 bg-[#EAF5EE] border border-[#C6E6D5] text-[#167653] rounded-lg text-xs flex items-center justify-between">
           <span>{successMsg}</span>
           <button onClick={() => setSuccessMsg(null)} className="underline">Dismiss</button>
         </div>
       )}
 
       {error && (
-        <div className="p-3 bg-rose-950/60 border border-rose-800 text-rose-300 rounded-lg text-xs flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+        <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {/* System Health Card */}
-      <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl space-y-3">
-        <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-          <Activity className="w-4 h-4 text-emerald-400" />
+      <div className="p-5 bg-white border border-[#E5EAE6] rounded-2xl space-y-3 shadow-xs">
+        <h3 className="text-sm font-bold text-[#17211D] flex items-center gap-2">
+          <Activity className="w-4 h-4 text-[#167653]" />
           Runtime Health & Environment
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono">
-          <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-            <span className="text-slate-500">Service Name</span>
-            <div className="text-slate-200 font-bold mt-0.5">{config?.project_name}</div>
+          <div className="p-3 bg-[#F7F9F7] rounded-lg border border-[#E5EAE6]">
+            <span className="text-[#64716A]">Service Name</span>
+            <div className="text-[#17211D] font-bold mt-0.5">{config?.project_name}</div>
           </div>
-          <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-            <span className="text-slate-500">Scanner Engine Version</span>
-            <div className="text-emerald-400 font-bold mt-0.5">v{config?.version}</div>
+          <div className="p-3 bg-[#F7F9F7] rounded-lg border border-[#E5EAE6]">
+            <span className="text-[#64716A]">Scanner Engine Version</span>
+            <div className="text-[#167653] font-bold mt-0.5">v{config?.version}</div>
           </div>
-          <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-            <span className="text-slate-500">Database Engine</span>
-            <div className="text-slate-200 font-bold mt-0.5">SQLite (Local Persistent)</div>
+          <div className="p-3 bg-[#F7F9F7] rounded-lg border border-[#E5EAE6]">
+            <span className="text-[#64716A]">Database Engine</span>
+            <div className="text-[#17211D] font-bold mt-0.5">SQLite (Local Persistent)</div>
           </div>
         </div>
       </div>
 
       {/* Configuration Form */}
-      <form onSubmit={handleSave} className="p-6 bg-slate-900/60 border border-slate-800/80 rounded-2xl space-y-5">
-        <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-          <Lock className="w-4 h-4 text-emerald-400" />
+      <form onSubmit={handleSave} className="p-6 bg-white border border-[#E5EAE6] rounded-2xl space-y-5 shadow-xs">
+        <h3 className="text-sm font-bold text-[#17211D] flex items-center gap-2">
+          <Lock className="w-4 h-4 text-[#167653]" />
           SSRF Boundaries & Scanning Controls
         </h3>
 
         {/* Local Targets Toggle */}
-        <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+        <div className="p-4 bg-[#F7F9F7] rounded-xl border border-[#E5EAE6] space-y-2">
           <label className="flex items-start justify-between gap-4 cursor-pointer">
             <div>
-              <span className="text-xs font-bold text-slate-200 block">
+              <span className="text-xs font-bold text-[#17211D] block">
                 Allow Localhost & Private RFC 1918 Targets (Local Development Only)
               </span>
-              <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+              <p className="text-[11px] text-[#64716A] mt-1 leading-relaxed">
                 When disabled (default), the scanner strictly blocks loopback (127.0.0.1, ::1), RFC 1918 (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), and link-local ranges to prevent Server-Side Request Forgery (SSRF). Enable this only when testing against locally hosted development servers. Cloud metadata (169.254.169.254) remains permanently blocked.
               </p>
             </div>
@@ -163,14 +160,14 @@ export const Settings: React.FC = () => {
               type="checkbox"
               checked={allowLocal}
               onChange={e => setAllowLocal(e.target.checked)}
-              className="mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500 w-4 h-4"
+              className="mt-1 rounded border-[#E5EAE6] text-[#167653] focus:ring-[#167653] accent-[#167653] w-4 h-4"
             />
           </label>
         </div>
 
         {/* Default Timeout */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-300 block">
+          <label className="text-xs font-semibold text-[#17211D] block">
             Default Request Timeout: {defaultTimeout}s
           </label>
           <input
@@ -179,9 +176,9 @@ export const Settings: React.FC = () => {
             max="60"
             value={defaultTimeout}
             onChange={e => setDefaultTimeout(Number(e.target.value))}
-            className="w-full accent-emerald-500"
+            className="w-full accent-[#167653]"
           />
-          <span className="text-[11px] text-slate-500 block">
+          <span className="text-[11px] text-[#64716A] block">
             Applied to non-destructive HTTP and TLS socket probes (5s - 60s).
           </span>
         </div>
@@ -190,7 +187,7 @@ export const Settings: React.FC = () => {
         <button
           type="submit"
           disabled={saving}
-          className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-2 disabled:opacity-50"
+          className="px-5 py-2.5 bg-[#167653] hover:bg-[#125e43] text-white font-bold rounded-full text-xs transition flex items-center gap-2 disabled:opacity-50 shadow-xs"
         >
           {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
           <span>Save Preferences</span>
@@ -198,27 +195,27 @@ export const Settings: React.FC = () => {
       </form>
 
       {/* Demo Data Management */}
-      <div className="p-6 bg-slate-900/60 border border-slate-800/80 rounded-2xl space-y-3">
-        <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-purple-400" />
+      <div className="p-6 bg-white border border-[#E5EAE6] rounded-2xl space-y-3 shadow-xs">
+        <h3 className="text-sm font-bold text-[#17211D] flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-[#167653]" />
           Simulated Baseline Telemetry Management
         </h3>
-        <p className="text-xs text-slate-400 leading-relaxed">
-          SentinelSec supports clearly tagged simulated baseline scans so you can immediately experience telemetry dashboards, score history trends, and historical comparison tools. Demo records are tagged with <span className="font-mono text-purple-300">[Simulated Demo]</span>.
+        <p className="text-xs text-[#64716A] leading-relaxed">
+          SentinelSec supports clearly tagged simulated baseline scans so you can immediately experience telemetry dashboards, score history trends, and historical comparison tools. Demo records are tagged with <span className="font-mono text-[#167653] bg-[#EAF5EE] px-1.5 py-0.5 rounded">[Simulated Demo]</span>.
         </p>
 
         <div className="flex flex-wrap items-center gap-3 pt-2">
           <button
             onClick={handleSeed}
-            className="px-4 py-2 bg-purple-950/60 hover:bg-purple-900/80 border border-purple-700/60 text-purple-200 font-semibold rounded-lg text-xs transition flex items-center gap-2"
+            className="px-4 py-2 bg-[#EAF5EE] hover:bg-[#cbe6d5] border border-[#C6E6D5] text-[#167653] font-semibold rounded-full text-xs transition flex items-center gap-2"
           >
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+            <Sparkles className="w-3.5 h-3.5" />
             <span>Seed 3 Demo Baseline Scans</span>
           </button>
 
           <button
             onClick={handleClear}
-            className="px-4 py-2 bg-slate-800 hover:bg-rose-950/60 border border-slate-700 text-slate-300 hover:text-rose-200 font-semibold rounded-lg text-xs transition flex items-center gap-2"
+            className="px-4 py-2 bg-white hover:bg-red-50 border border-[#E5EAE6] hover:border-red-200 text-[#64716A] hover:text-red-600 font-semibold rounded-full text-xs transition flex items-center gap-2"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Clear Demo Baseline Scans</span>
@@ -227,15 +224,15 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Scope Matrix */}
-      <div className="p-6 bg-slate-900/60 border border-slate-800/80 rounded-2xl space-y-4 text-xs">
-        <h3 className="text-sm font-bold text-slate-200">Capabilities & Safeguards Matrix</h3>
+      <div className="p-6 bg-white border border-[#E5EAE6] rounded-2xl space-y-4 text-xs shadow-xs">
+        <h3 className="text-sm font-bold text-[#17211D]">Capabilities & Safeguards Matrix</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <span className="font-bold text-emerald-400 uppercase tracking-wide text-[11px] block">
+            <span className="font-bold text-[#167653] uppercase tracking-wide text-[11px] block">
               Authorized Capabilities (Defensive)
             </span>
-            <ul className="space-y-1 text-slate-300 list-disc list-inside leading-relaxed">
+            <ul className="space-y-1 text-[#17211D] list-disc list-inside leading-relaxed">
               {config?.capabilities?.enabled?.map((c: string, idx: number) => (
                 <li key={idx}>{c}</li>
               ))}
@@ -243,10 +240,10 @@ export const Settings: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <span className="font-bold text-rose-400 uppercase tracking-wide text-[11px] block">
+            <span className="font-bold text-red-600 uppercase tracking-wide text-[11px] block">
               Excluded Actions (Out of Scope)
             </span>
-            <ul className="space-y-1 text-slate-400 list-disc list-inside leading-relaxed">
+            <ul className="space-y-1 text-[#64716A] list-disc list-inside leading-relaxed">
               {config?.capabilities?.disabled_out_of_scope?.map((c: string, idx: number) => (
                 <li key={idx}>{c}</li>
               ))}

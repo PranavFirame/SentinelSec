@@ -23,7 +23,7 @@ export const CategoryBarChart: React.FC<Props> = ({ data, width = 380, height = 
         .attr('x', width / 2)
         .attr('y', height / 2)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#64748b')
+        .attr('fill', '#64716A')
         .attr('font-size', '13px')
         .text('No category telemetry recorded');
       return;
@@ -47,7 +47,7 @@ export const CategoryBarChart: React.FC<Props> = ({ data, width = 380, height = 
       .domain([0, maxCount * 1.15])
       .range([0, chartWidth]);
 
-    // Bars with gradient color
+    // Bars with Simple Analytics green fill
     const bars = g
       .selectAll('.bar')
       .data(data)
@@ -56,8 +56,8 @@ export const CategoryBarChart: React.FC<Props> = ({ data, width = 380, height = 
       .attr('y', d => y(d.category)!)
       .attr('height', y.bandwidth())
       .attr('x', 0)
-      .attr('rx', 3)
-      .attr('fill', '#38bdf8')
+      .attr('rx', 4)
+      .attr('fill', '#167653')
       .attr('opacity', 0.85)
       .attr('width', 0);
 
@@ -73,7 +73,7 @@ export const CategoryBarChart: React.FC<Props> = ({ data, width = 380, height = 
       .append('text')
       .attr('y', d => y(d.category)! + y.bandwidth() / 2 + 4)
       .attr('x', d => x(d.count) + 8)
-      .attr('fill', '#94a3b8')
+      .attr('fill', '#64716A')
       .attr('font-size', '11px')
       .attr('font-family', 'monospace')
       .text(d => `${d.count} (${d.percentage}%)`);
@@ -83,7 +83,7 @@ export const CategoryBarChart: React.FC<Props> = ({ data, width = 380, height = 
       .call(d3.axisLeft(y).tickSize(0))
       .call(axis => axis.select('.domain').remove())
       .selectAll('text')
-      .attr('fill', '#cbd5e1')
+      .attr('fill', '#17211D')
       .attr('font-size', '11px')
       .attr('font-weight', '500')
       .style('text-anchor', 'end');

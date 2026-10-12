@@ -9,9 +9,9 @@ interface Props {
 export const ScoreGauge: React.FC<Props> = ({ score, size = 'md', showLabel = true }) => {
   if (score === undefined || score === null) {
     return (
-      <div className="flex flex-col items-center justify-center text-slate-500">
+      <div className="flex flex-col items-center justify-center text-[#64716A]">
         <span className="text-xl font-bold font-mono">--</span>
-        {showLabel && <span className="text-xs text-slate-400">Not Scored</span>}
+        {showLabel && <span className="text-xs text-[#64716A]">Not Scored</span>}
       </div>
     );
   }
@@ -20,30 +20,25 @@ export const ScoreGauge: React.FC<Props> = ({ score, size = 'md', showLabel = tr
 
   // Determine Grade & Color
   let grade = 'F';
-  let colorClass = 'text-rose-500';
-  let strokeClass = '#f43f5e';
-  let bgClass = 'bg-rose-950/20 border-rose-900/40';
+  let colorClass = 'text-red-600';
+  let strokeClass = '#DC2626';
 
   if (s >= 90) {
     grade = 'A';
-    colorClass = 'text-emerald-400';
-    strokeClass = '#34d399';
-    bgClass = 'bg-emerald-950/20 border-emerald-900/40';
+    colorClass = 'text-[#167653]';
+    strokeClass = '#167653';
   } else if (s >= 80) {
     grade = 'B';
-    colorClass = 'text-teal-400';
-    strokeClass = '#2dd4bf';
-    bgClass = 'bg-teal-950/20 border-teal-900/40';
+    colorClass = 'text-emerald-600';
+    strokeClass = '#059669';
   } else if (s >= 65) {
     grade = 'C';
-    colorClass = 'text-amber-400';
-    strokeClass = '#fbbf24';
-    bgClass = 'bg-amber-950/20 border-amber-900/40';
+    colorClass = 'text-amber-600';
+    strokeClass = '#D97706';
   } else if (s >= 45) {
     grade = 'D';
-    colorClass = 'text-orange-400';
-    strokeClass = '#fb923c';
-    bgClass = 'bg-orange-950/20 border-orange-900/40';
+    colorClass = 'text-orange-600';
+    strokeClass = '#EA580C';
   }
 
   const dimensions = {
@@ -69,7 +64,7 @@ export const ScoreGauge: React.FC<Props> = ({ score, size = 'md', showLabel = tr
             cx={dimensions.size / 2}
             cy={dimensions.size / 2}
             r={radius}
-            stroke="#1e293b"
+            stroke="#E5EAE6"
             strokeWidth={dimensions.stroke}
             fill="transparent"
           />
@@ -93,14 +88,14 @@ export const ScoreGauge: React.FC<Props> = ({ score, size = 'md', showLabel = tr
           <span className={`font-mono font-bold leading-none ${dimensions.text} ${colorClass}`}>
             {s}
           </span>
-          <span className={`font-semibold text-slate-400 leading-none mt-0.5 ${dimensions.grade}`}>
+          <span className={`font-semibold text-[#64716A] leading-none mt-0.5 ${dimensions.grade}`}>
             Grade {grade}
           </span>
         </div>
       </div>
 
       {showLabel && (
-        <span className="text-xs text-slate-400 mt-2 font-medium tracking-wide">
+        <span className="text-xs text-[#64716A] mt-2 font-medium tracking-wide">
           Security Score
         </span>
       )}

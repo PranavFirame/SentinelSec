@@ -5,13 +5,10 @@ import { SeverityBadge } from '../components/common/SeverityBadge';
 import {
   PackageSearch,
   UploadCloud,
-  FileCode,
   ShieldCheck,
   AlertTriangle,
   Loader2,
   CheckCircle2,
-  ExternalLink,
-  Code2
 } from 'lucide-react';
 
 export const DependencyScan: React.FC = () => {
@@ -79,24 +76,24 @@ cryptography==3.3.2`;
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Title */}
       <div>
-        <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-          <PackageSearch className="w-5 h-5 text-emerald-400" />
+        <h2 className="text-xl font-bold text-[#17211D] flex items-center gap-2">
+          <PackageSearch className="w-5 h-5 text-[#167653]" />
           Software Supply Chain & Dependency Intelligence
         </h2>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-[#64716A] mt-1">
           Audit project manifests and lockfiles for known public CVE advisories via the official Open Source Vulnerabilities (OSV) database.
         </p>
       </div>
 
       {/* Input Card */}
-      <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl space-y-5 shadow-sm">
-        <div className="flex border-b border-sa text-xs font-semibold">
+      <div className="p-6 bg-white border border-[#E5EAE6] rounded-2xl space-y-5 shadow-xs">
+        <div className="flex border-b border-[#E5EAE6] text-xs font-semibold">
           <button
             onClick={() => setActiveTab('paste')}
             className={`pb-2.5 px-4 border-b-2 transition ${
               activeTab === 'paste'
-                ? 'border-coral text-coral'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-[#167653] text-[#167653]'
+                : 'border-transparent text-[#64716A] hover:text-[#17211D]'
             }`}
           >
             Paste Manifest Code
@@ -105,8 +102,8 @@ cryptography==3.3.2`;
             onClick={() => setActiveTab('upload')}
             className={`pb-2.5 px-4 border-b-2 transition ${
               activeTab === 'upload'
-                ? 'border-coral text-coral'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-[#167653] text-[#167653]'
+                : 'border-transparent text-[#64716A] hover:text-[#17211D]'
             }`}
           >
             Upload Lockfile File
@@ -116,27 +113,27 @@ cryptography==3.3.2`;
         {activeTab === 'paste' && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-300">Manifest Format Type:</label>
+              <label className="text-xs font-semibold text-[#17211D]">Manifest Format Type:</label>
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-slate-500">Insert Sample:</span>
+                <span className="text-[#64716A]">Insert Sample:</span>
                 <button
                   type="button"
                   onClick={() => {
                     setFilename('requirements.txt');
                     setRawContent(sampleRequirements);
                   }}
-                  className="text-coral hover:underline font-mono text-[11px]"
+                  className="text-[#167653] hover:underline font-mono text-[11px]"
                 >
                   requirements.txt
                 </button>
-                <span>•</span>
+                <span className="text-[#E5EAE6]">•</span>
                 <button
                   type="button"
                   onClick={() => {
                     setFilename('package-lock.json');
                     setRawContent(samplePackageLock);
                   }}
-                  className="text-coral hover:underline font-mono text-[11px]"
+                  className="text-[#167653] hover:underline font-mono text-[11px]"
                 >
                   package-lock.json
                 </button>
@@ -147,7 +144,7 @@ cryptography==3.3.2`;
               <select
                 value={filename}
                 onChange={e => setFilename(e.target.value)}
-                className="bg-[#172123] border border-sa rounded-xl px-3 py-1.5 text-xs text-slate-200 font-mono"
+                className="bg-[#F7F9F7] border border-[#E5EAE6] rounded-xl px-3 py-1.5 text-xs text-[#17211D] font-mono focus:outline-none"
               >
                 <option value="requirements.txt">Python (requirements.txt)</option>
                 <option value="package-lock.json">Node.js (package-lock.json)</option>
@@ -160,19 +157,19 @@ cryptography==3.3.2`;
               value={rawContent}
               onChange={e => setRawContent(e.target.value)}
               placeholder="Paste manifest or lockfile contents here..."
-              className="w-full bg-[#172123] border border-sa rounded-xl p-3 font-mono text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-coral"
+              className="w-full bg-[#F7F9F7] border border-[#E5EAE6] rounded-xl p-3 font-mono text-xs text-[#17211D] placeholder-[#64716A] focus:outline-none focus:border-[#167653]"
             />
           </div>
         )}
 
         {activeTab === 'upload' && (
           <div className="space-y-3">
-            <label className="border-2 border-dashed border-slate-700/60 hover:border-coral/50 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-[#172123]/60">
-              <UploadCloud className="w-8 h-8 text-coral mb-2" />
-              <span className="text-xs font-semibold text-slate-200">
+            <label className="border-2 border-dashed border-[#E5EAE6] hover:border-[#167653] rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-[#F7F9F7]">
+              <UploadCloud className="w-8 h-8 text-[#167653] mb-2" />
+              <span className="text-xs font-semibold text-[#17211D]">
                 {selectedFile ? selectedFile.name : 'Click to select package-lock.json or requirements.txt'}
               </span>
-              <span className="text-[11px] text-slate-400 mt-1">
+              <span className="text-[11px] text-[#64716A] mt-1">
                 Supported: package-lock.json, requirements.txt, poetry.lock
               </span>
               <input
@@ -185,8 +182,8 @@ cryptography==3.3.2`;
         )}
 
         {error && (
-          <div className="p-3 bg-rose-950/50 border border-rose-800 rounded-xl text-rose-300 text-xs flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+          <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
             <span>{error}</span>
           </div>
         )}
@@ -194,7 +191,7 @@ cryptography==3.3.2`;
         <button
           onClick={handleScan}
           disabled={loading}
-          className="w-full py-3 bg-coral hover:bg-rose-500 disabled:opacity-50 text-white font-bold rounded-full text-xs transition flex items-center justify-center gap-2 shadow-sm"
+          className="w-full py-3 bg-[#167653] hover:bg-[#125e43] disabled:opacity-50 text-white font-bold rounded-full text-xs transition flex items-center justify-center gap-2 shadow-xs"
         >
           {loading ? (
             <>
@@ -214,18 +211,18 @@ cryptography==3.3.2`;
       {result && (
         <div className="space-y-5">
           {/* Results Header Card */}
-          <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="p-5 bg-white border border-[#E5EAE6] rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs">
             <div className="space-y-1.5">
-              <span className="text-xs font-mono uppercase text-slate-500 font-semibold">
+              <span className="text-xs font-mono uppercase text-[#64716A] font-semibold">
                 Manifest: {result.filename}
               </span>
-              <h3 className="text-lg font-bold text-slate-100">
+              <h3 className="text-lg font-bold text-[#17211D]">
                 Supply Chain Security Evaluation
               </h3>
-              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 font-mono">
+              <div className="flex flex-wrap items-center gap-3 text-xs text-[#64716A] font-mono">
                 <span>{result.total_dependencies} dependencies analyzed</span>
                 <span>•</span>
-                <span className="text-rose-400 font-bold">{result.vulnerabilities_found} CVE advisories</span>
+                <span className="text-red-600 font-bold">{result.vulnerabilities_found} CVE advisories</span>
                 <span>•</span>
                 <span>{result.unpinned_dependencies} unpinned</span>
               </div>
@@ -237,32 +234,32 @@ cryptography==3.3.2`;
           {/* Vulnerabilities Table */}
           {result.findings && result.findings.length > 0 ? (
             <div className="space-y-3">
-              <h4 className="text-sm font-bold text-slate-200">
+              <h4 className="text-sm font-bold text-[#17211D]">
                 Discovered Security Advisories ({result.findings.length})
               </h4>
               <div className="space-y-3">
                 {result.findings.map((f: any, idx: number) => (
                   <div
                     key={idx}
-                    className="p-4 bg-slate-900/50 border border-slate-800/80 rounded-xl space-y-2 text-xs"
+                    className="p-4 bg-white border border-[#E5EAE6] rounded-xl space-y-2 text-xs shadow-xs"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <SeverityBadge severity={f.severity} size="sm" />
-                        <span className="font-mono font-bold text-slate-200">{f.rule_id}</span>
-                        <span className="text-slate-500 font-mono">[{f.affected_component}]</span>
+                        <span className="font-mono font-bold text-[#17211D]">{f.rule_id}</span>
+                        <span className="text-[#64716A] font-mono">[{f.affected_component}]</span>
                       </div>
                     </div>
 
-                    <h5 className="font-semibold text-slate-100">{f.title}</h5>
+                    <h5 className="font-semibold text-[#17211D]">{f.title}</h5>
 
-                    <div className="p-2.5 bg-slate-950 rounded border border-slate-800 text-emerald-400 font-mono">
+                    <div className="p-2.5 bg-[#EAF5EE] rounded border border-[#C6E6D5] text-[#167653] font-mono">
                       Remediation: {f.remediation}
                     </div>
 
                     {f.evidence && f.evidence.fixed_versions?.length > 0 && (
-                      <div className="text-[11px] text-slate-400">
-                        Fixed in versions: <span className="font-mono text-slate-200">{f.evidence.fixed_versions.join(', ')}</span>
+                      <div className="text-[11px] text-[#64716A]">
+                        Fixed in versions: <span className="font-mono text-[#17211D] font-bold">{f.evidence.fixed_versions.join(', ')}</span>
                       </div>
                     )}
                   </div>
@@ -270,10 +267,10 @@ cryptography==3.3.2`;
               </div>
             </div>
           ) : (
-            <div className="p-6 bg-emerald-950/20 border border-emerald-900/40 rounded-xl text-center text-xs text-emerald-300">
-              <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
+            <div className="p-6 bg-[#EAF5EE] border border-[#C6E6D5] rounded-xl text-center text-xs text-[#167653]">
+              <CheckCircle2 className="w-8 h-8 text-[#167653] mx-auto mb-2" />
               <span className="font-bold block text-sm">No Known CVE Advisories Identified</span>
-              <p className="text-slate-400 mt-1">
+              <p className="text-[#64716A] mt-1">
                 All parsed packages currently match clean records in the OSV database feed.
               </p>
             </div>

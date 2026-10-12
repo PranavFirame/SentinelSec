@@ -25,7 +25,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
         .attr('x', width / 2)
         .attr('y', height / 2)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#64748b')
+        .attr('fill', '#64716A')
         .attr('font-size', '12px')
         .text('No historical assessments recorded');
       return;
@@ -49,13 +49,8 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .attr('x2', '0%')
       .attr('y2', '100%');
 
-    if (metric === 'score') {
-      gradient.append('stop').attr('offset', '0%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.35);
-      gradient.append('stop').attr('offset', '100%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.0);
-    } else {
-      gradient.append('stop').attr('offset', '0%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.35);
-      gradient.append('stop').attr('offset', '100%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.0);
-    }
+    gradient.append('stop').attr('offset', '0%').attr('stop-color', '#167653').attr('stop-opacity', 0.25);
+    gradient.append('stop').attr('offset', '100%').attr('stop-color', '#167653').attr('stop-opacity', 0.0);
 
     const x = d3.scalePoint()
       .domain(data.map(d => d.date))
@@ -67,7 +62,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       return (d.critical || 0) + (d.high || 0) + (d.medium || 0) + (d.low || 0);
     };
 
-    const yMax = metric === 'score' ? 100 : Math.max(5, d3.max(data, d => getValue(d))! * 1.25);
+    const yMax = metric === 'score' ? 100 : Math.max(5, (d3.max(data, d => getValue(d)) || 5) * 1.25);
     const y = d3.scaleLinear()
       .domain([0, yMax])
       .range([chartHeight, 0]);
@@ -82,9 +77,9 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       )
       .call(axis => axis.select('.domain').remove())
       .selectAll('line')
-      .attr('stroke', '#1e293b')
+      .attr('stroke', '#E5EAE6')
       .attr('stroke-dasharray', '2 3')
-      .attr('stroke-opacity', 0.6);
+      .attr('stroke-opacity', 1);
 
     // Area Fill
     const area = d3.area<TrendDataPoint>()
@@ -99,7 +94,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .attr('d', area);
 
     // Line Path
-    const lineColor = '#ff4d4d';
+    const lineColor = '#167653';
     const line = d3.line<TrendDataPoint>()
       .x(d => x(d.date)!)
       .y(d => y(getValue(d)))
@@ -120,7 +115,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .attr('cx', d => x(d.date)!)
       .attr('cy', d => y(getValue(d)))
       .attr('r', 4)
-      .attr('fill', '#172123')
+      .attr('fill', '#FFFFFF')
       .attr('stroke', lineColor)
       .attr('stroke-width', 2)
       .attr('class', 'cursor-pointer transition-all duration-150');
@@ -131,8 +126,8 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
         if (tooltipRef.current) {
           const val = getValue(d);
           tooltipRef.current.innerHTML = `
-            <div class="text-[11px] font-semibold text-slate-400 font-mono">${d.date}</div>
-            <div class="text-sm font-bold font-mono text-slate-100 mt-0.5">
+            <div class="text-[11px] font-semibold text-[#64716A] font-mono">${d.date}</div>
+            <div class="text-sm font-bold font-mono text-[#17211D] mt-0.5">
               ${metric === 'score' ? `${val} / 100 Posture` : `${val} Findings`}
             </div>
           `;
@@ -147,7 +142,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
         }
       })
       .on('mouseleave', function () {
-        d3.select(this).attr('r', 4).attr('fill', '#0b0f19');
+        d3.select(this).attr('r', 4).attr('fill', '#FFFFFF');
         if (tooltipRef.current) {
           tooltipRef.current.style.opacity = '0';
         }
@@ -160,7 +155,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .call(axis => axis.select('.domain').remove())
       .selectAll('text')
       .attr('dy', '1em')
-      .attr('fill', '#64748b')
+      .attr('fill', '#64716A')
       .attr('font-size', '10px')
       .attr('font-family', 'monospace');
 
@@ -169,7 +164,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .call(d3.axisLeft(y).ticks(4))
       .call(axis => axis.select('.domain').remove())
       .selectAll('text')
-      .attr('fill', '#64748b')
+      .attr('fill', '#64716A')
       .attr('font-size', '10px')
       .attr('font-family', 'monospace');
 
@@ -183,8 +178,8 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
           onClick={() => setMetric('score')}
           className={`px-3 py-1 rounded-full text-[11px] font-semibold transition ${
             metric === 'score'
-              ? 'bg-coral/20 text-coral border border-coral/40'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-[#EAF5EE] text-[#167653] border border-[#C6E6D5]'
+              : 'text-[#64716A] hover:text-[#17211D]'
           }`}
         >
           Security Posture Score
@@ -193,8 +188,8 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
           onClick={() => setMetric('findings')}
           className={`px-3 py-1 rounded-full text-[11px] font-semibold transition ${
             metric === 'findings'
-              ? 'bg-coral/20 text-coral border border-coral/40'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-[#EAF5EE] text-[#167653] border border-[#C6E6D5]'
+              : 'text-[#64716A] hover:text-[#17211D]'
           }`}
         >
           Exposures Discovered
@@ -206,7 +201,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       {/* Tooltip */}
       <div
         ref={tooltipRef}
-        className="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-20 bg-[#1f2c2e] border border-sa rounded-xl px-3 py-2 shadow-xl text-left"
+        className="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-20 bg-white border border-[#E5EAE6] rounded-xl px-3 py-2 shadow-lg text-left"
         style={{ minWidth: '100px' }}
       />
     </div>
