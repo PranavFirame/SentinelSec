@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  ShieldAlert,
   LayoutDashboard,
   SearchCode,
   History,
@@ -9,35 +8,37 @@ import {
   BarChart3,
   Settings,
   BookOpen,
+  Shield,
   Activity,
-  Lock
+  Zap
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
   const navItems = [
     { to: '/', label: 'Overview', icon: LayoutDashboard },
-    { to: '/scans/new', label: 'New Scan', icon: SearchCode },
-    { to: '/history', label: 'Scan History', icon: History },
-    { to: '/dependencies', label: 'Dependency Intel', icon: PackageSearch },
-    { to: '/analytics', label: 'Security Analytics', icon: BarChart3 },
-    { to: '/settings', label: 'Scanner Settings', icon: Settings },
-    { to: '/docs', label: 'Documentation', icon: BookOpen },
+    { to: '/scans/new', label: 'New Audit', icon: SearchCode },
+    { to: '/history', label: 'Audit History', icon: History },
+    { to: '/dependencies', label: 'Dependencies', icon: PackageSearch },
+    { to: '/analytics', label: 'Analytics', icon: BarChart3 },
+    { to: '/settings', label: 'Settings', icon: Settings },
+    { to: '/docs', label: 'Docs', icon: BookOpen },
   ];
 
   return (
-    <aside className="w-64 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between shrink-0 select-none">
+    <aside className="w-60 bg-[#0d121f] border-r border-slate-800/80 flex flex-col justify-between shrink-0 select-none">
       <div>
-        {/* Brand */}
-        <div className="h-16 flex items-center gap-3 px-5 border-b border-slate-800/80 bg-slate-950/40">
-          <div className="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-            <ShieldAlert className="w-5 h-5" />
+        {/* Brand Header */}
+        <div className="h-16 flex items-center gap-3 px-5 border-b border-slate-800/80">
+          <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400">
+            <Shield className="w-4 h-4 fill-orange-400/20" />
           </div>
           <div>
-            <div className="font-bold text-slate-100 tracking-tight text-base leading-none">
-              Sentinel<span className="text-emerald-400">Sec</span>
+            <div className="font-bold text-slate-100 tracking-tight text-sm leading-none flex items-center gap-1.5">
+              <span>Sentinel</span>
+              <span className="text-orange-400">Sec</span>
             </div>
-            <div className="text-[10px] uppercase font-mono tracking-wider text-slate-500 mt-1">
-              AnalyticsPro Engine
+            <div className="text-[10px] font-mono tracking-wider text-slate-500 mt-1">
+              Defensive Telemetry
             </div>
           </div>
         </div>
@@ -51,10 +52,10 @@ export const Sidebar: React.FC = () => {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     isActive
-                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                      ? 'bg-orange-500/10 text-orange-400 border border-orange-500/25 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 border border-transparent'
                   }`
                 }
               >
@@ -67,16 +68,19 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Footer Info */}
-      <div className="p-4 border-t border-slate-800/80 bg-slate-950/40 text-xs">
-        <div className="flex items-center gap-2 text-slate-400 font-mono text-[11px] mb-1.5">
-          <Lock className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Defensive Non-Destructive</span>
+      <div className="p-4 border-t border-slate-800/80 bg-slate-950/30 text-xs">
+        <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1.5 font-medium">
+          <span className="flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5 text-orange-400" />
+            <span>Zero-Cookie Engine</span>
+          </span>
+          <span className="font-mono text-slate-500">v1.0.0</span>
         </div>
         <div className="flex items-center justify-between text-[11px] text-slate-500">
-          <span>Engine v1.0.0</span>
-          <span className="inline-flex items-center gap-1 text-emerald-400 font-medium">
+          <span>Non-destructive Probes</span>
+          <span className="inline-flex items-center gap-1.5 text-emerald-400 font-medium font-mono text-[10px]">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Online
+            Active
           </span>
         </div>
       </div>
