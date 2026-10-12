@@ -2,7 +2,7 @@ services:
   # FastAPI Backend Service (Free Tier)
   - type: web
     name: sentinelsec-backend
-    env: python
+    runtime: python
     plan: free
     buildCommand: "pip install -r backend/requirements.txt && python -m alembic -c backend/alembic.ini upgrade head"
     startCommand: "uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
@@ -16,11 +16,10 @@ services:
       - key: CORS_ORIGINS
         value: "*"
 
-  # React + Vite Frontend (Free Static Site Tier)
+  # React + Vite Frontend (Static Site - Always Free on Render CDN)
   - type: web
     name: sentinelsec-frontend
-    env: static
-    plan: free
+    runtime: static
     buildCommand: "cd frontend && npm install && npm run build"
     staticPublishPath: "./frontend/dist"
     routes:
