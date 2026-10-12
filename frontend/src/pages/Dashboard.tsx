@@ -96,14 +96,96 @@ export const Dashboard: React.FC = () => {
     return s.target.includes(selectedTarget);
   });
 
+  // Target-scoped or global aggregated metrics
+  const isTargetScoped = selectedTarget !== 'all';
+
+  // Compute metrics dynamically for the selected target or fallback to global metrics
+  const scopedTotalScans = isTargetScoped ? filteredScans.length : metrics.total_scans;
+  
+  // Security score: average security_score of target scans (or latest scan if desired, average is robust)
+  const scoredScans = filteredScans.filter(s => s.security_score !== undefined && s.security_score !== null);
+  const scopedScore = isTargetScoped
+    ? (scoredScans.length > 0
+        ? Math.round(scoredScans.reduce((sum, s) => sum + (s.security_score || 0), 0) / scoredScans.length)
+        : 0)
+    : metrics.overall_score;
+
+  // Passed & failed checks for target
+  const scopedPassedChecks = isTargetScoped
+    ? filteredScans.reduce((sum, s) => sum + (s.checks_passed || 0), 0)
+    : metrics.passed_checks;
+
+  const scopedFailedChecks = isTargetScoped
+    ? filteredScans.reduce((sum, s) => sum + (s.checks_failed || 0), 0)
+    : metrics.failed_checks;
+
+  // Findings counts for target
+  const scopedCritical = isTargetScoped
+    ? filteredScans.reduce((sum, s) => sum + (s.findings_summary?.critical || 0), 0)
+    : metrics.critical_findings;
+
+  const scopedHigh = isTargetScoped
+    ? filteredScans.reduce((sum, s) => sum + (s.findings_summary?.high || 0), 0)
+    : metrics.high_findings;
+
+  const scopedMedium = isTargetScoped
+    ? filteredScans.reduce((sum, s) => sum + (s.findings_summary?.medium || 0), 0)
+    : metrics.medium_findings;
+
+  const scopedLow = isTargetScoped
+    ? filteredScans.reduce((sum, s) => sum + (s.findings_summary?.low || 0), 0)
+    : metrics.low_findings;
+
+  const scopedInfo = isTargetScoped
+    ? filteredScans.reduce((sum, s) => sum + (s.findings_summary?.informational || 0), 0)
+    : metrics.info_findings;
+
+  const scopedTotalFindings = scopedCritical + scopedHigh + scopedMedium + scopedLow + scopedInfo;
+
+  const passedTotal = scopedPassedChecks || 0;
+  const failedTotal = scopedFailedChecks || 0;
+  const checkTotal = passedTotal + failedTotal || (scopedTotalScans > 0 ? 1 : 0);
+  const passRate = checkTotal > 0 ? Math.round((passedTotal / (passedTotal + failedTotal || 1)) * 100) : 100;
+
   // Prepare data for SimpleBreakdownTables
-  const rawWeaknessItems: BreakdownItem[] = (metrics.top_issues || []).map(i => ({
-    id: i.rule_id,
-    label: i.title,
-    sublabel: `${i.rule_id} • ${i.category}`,
-    value: i.count,
-    badge: <SeverityBadge severity={i.severity} size="sm" />,
-  }));
+  // Filter top issues to those matching the scans of the selected target if target-scoped
+  const filteredScanIds = new Set(filteredScans.map(s => s.id));
+  const scopedFindings = isTargetScoped
+    ? (metrics.recent_findings || []).filter(f => filteredScanIds.has(f.scan_id))
+    : (metrics.recent_findings || []);
+
+  const rawWeaknessItems: BreakdownItem[] = isTargetScoped
+    ? (() => {
+        const issueMap = new Map<string, { rule_id: string; title: string; category: string; severity: string; count: number }>();
+        scopedFindings.forEach(f => {
+          const existing = issueMap.get(f.rule_id);
+          if (existing) {
+            existing.count += 1;
+          } else {
+            issueMap.set(f.rule_id, {
+              rule_id: f.rule_id,
+              title: f.title,
+              category: f.category,
+              severity: f.severity,
+              count: 1,
+            });
+          }
+        });
+        return Array.from(issueMap.values()).map(i => ({
+          id: i.rule_id,
+          label: i.title,
+          sublabel: `${i.rule_id} • ${i.category}`,
+          value: i.count,
+          badge: <SeverityBadge severity={i.severity} size="sm" />,
+        }));
+      })()
+    : (metrics.top_issues || []).map(i => ({
+        id: i.rule_id,
+        label: i.title,
+        sublabel: `${i.rule_id} • ${i.category}`,
+        value: i.count,
+        badge: <SeverityBadge severity={i.severity} size="sm" />,
+      }));
 
   const weaknessItems = activeFilter
     ? rawWeaknessItems.filter(i => i.label.toLowerCase().includes(activeFilter.toLowerCase()))
@@ -131,11 +213,6 @@ export const Dashboard: React.FC = () => {
       </span>
     ),
   }));
-
-  const passedTotal = metrics.passed_checks || 0;
-  const failedTotal = metrics.failed_checks || 0;
-  const checkTotal = passedTotal + failedTotal || 1;
-  const passRate = Math.round((passedTotal / checkTotal) * 100);
 
   // Clean onboarding view for new users with 0 scans
   if (metrics.total_scans === 0) {
@@ -299,7 +376,7 @@ export const Dashboard: React.FC = () => {
               Security Score
             </span>
             <div className="mt-1 text-3xl font-extrabold font-mono text-[#17211D] tracking-tight">
-              {metrics.overall_score}
+              {scopedScore}
               <span className="text-xs text-[#64716A] font-sans ml-1 font-normal">/ 100</span>
             </div>
             <div className="flex items-center gap-1.5 mt-1 text-[11px] font-mono text-[#167653]">
@@ -307,7 +384,7 @@ export const Dashboard: React.FC = () => {
               <span>{passRate}% checks passed</span>
             </div>
           </div>
-          <ScoreGauge score={metrics.overall_score} size="sm" showLabel={false} />
+          <ScoreGauge score={scopedScore} size="sm" showLabel={false} />
         </div>
 
         {/* KPI 2: Completed Audits */}
@@ -319,7 +396,7 @@ export const Dashboard: React.FC = () => {
             <History className="w-4 h-4 text-[#64716A]" />
           </div>
           <div className="mt-1 text-3xl font-extrabold font-mono text-[#17211D] tracking-tight">
-            {metrics.total_scans}
+            {scopedTotalScans}
           </div>
           <div className="flex items-center gap-2 text-[11px] text-[#64716A] mt-1">
             <span className="text-[#167653] font-mono font-medium">{passedTotal} passed</span>
@@ -337,14 +414,14 @@ export const Dashboard: React.FC = () => {
             <Shield className="w-4 h-4 text-[#167653]" />
           </div>
           <div className="mt-1 text-3xl font-extrabold font-mono text-red-600 tracking-tight">
-            {metrics.total_findings}
+            {scopedTotalFindings}
           </div>
           <div className="flex items-center gap-2 text-[11px] mt-1 font-mono">
-            <span className="text-red-600 font-semibold">{metrics.critical_findings} Crit</span>
+            <span className="text-red-600 font-semibold">{scopedCritical} Crit</span>
             <span className="text-[#E5EAE6]">•</span>
-            <span className="text-orange-600 font-semibold">{metrics.high_findings} High</span>
+            <span className="text-orange-600 font-semibold">{scopedHigh} High</span>
             <span className="text-[#E5EAE6]">•</span>
-            <span className="text-amber-600 font-semibold">{metrics.medium_findings} Med</span>
+            <span className="text-amber-600 font-semibold">{scopedMedium} Med</span>
           </div>
         </div>
 
@@ -439,18 +516,18 @@ export const Dashboard: React.FC = () => {
               <p className="text-[11px] text-[#64716A] mt-0.5">Proportional breakdown of open issues</p>
             </div>
             <span className="font-mono text-xs font-semibold text-[#64716A]">
-              {metrics.total_findings} Total
+              {scopedTotalFindings} Total
             </span>
           </div>
 
           <div className="flex items-center justify-center my-auto py-2">
             <SeverityDonutChart
               data={{
-                critical: metrics.critical_findings,
-                high: metrics.high_findings,
-                medium: metrics.medium_findings,
-                low: metrics.low_findings,
-                informational: metrics.info_findings,
+                critical: scopedCritical,
+                high: scopedHigh,
+                medium: scopedMedium,
+                low: scopedLow,
+                informational: scopedInfo,
               }}
               width={260}
               height={180}
@@ -459,19 +536,19 @@ export const Dashboard: React.FC = () => {
 
           <div className="grid grid-cols-4 gap-2 pt-3 border-t border-[#E5EAE6] text-center font-mono text-xs">
             <div>
-              <div className="text-red-600 font-bold">{metrics.critical_findings}</div>
+              <div className="text-red-600 font-bold">{scopedCritical}</div>
               <div className="text-[10px] text-[#64716A] font-sans">Critical</div>
             </div>
             <div>
-              <div className="text-orange-600 font-bold">{metrics.high_findings}</div>
+              <div className="text-orange-600 font-bold">{scopedHigh}</div>
               <div className="text-[10px] text-[#64716A] font-sans">High</div>
             </div>
             <div>
-              <div className="text-amber-600 font-bold">{metrics.medium_findings}</div>
+              <div className="text-amber-600 font-bold">{scopedMedium}</div>
               <div className="text-[10px] text-[#64716A] font-sans">Medium</div>
             </div>
             <div>
-              <div className="text-blue-600 font-bold">{metrics.low_findings}</div>
+              <div className="text-blue-600 font-bold">{scopedLow}</div>
               <div className="text-[10px] text-[#64716A] font-sans">Low</div>
             </div>
           </div>
