@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { SearchCode, LogOut, User as UserIcon } from 'lucide-react';
+import { SearchCode, LogOut, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  onToggleMobileMenu?: () => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onToggleMobileMenu }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -29,9 +33,18 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="h-14 bg-white border-b border-[#E5EAE6] px-6 flex items-center justify-between sticky top-0 z-30">
-      <div className="flex items-center gap-3">
-        <h1 className="text-[15px] font-semibold text-[#17211D] tracking-tight m-0">
+    <header className="h-14 bg-white border-b border-[#E5EAE6] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30">
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={onToggleMobileMenu}
+          className="md:hidden p-1.5 -ml-1 text-[#64716A] hover:text-[#17211D] hover:bg-[#F7F9F7] rounded-lg transition"
+          aria-label="Toggle navigation menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        <h1 className="text-[14px] sm:text-[15px] font-semibold text-[#17211D] tracking-tight m-0 truncate max-w-[160px] sm:max-w-none">
           {getPageTitle()}
         </h1>
       </div>

@@ -325,13 +325,13 @@ export const Dashboard: React.FC = () => {
       {/* Target Domain Selector, Timeframe Pills & Drill-down Active Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         {/* Left: Target Domain Dropdown & Filter Pill */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative inline-flex items-center bg-white border border-[#E5EAE6] rounded-xl px-3 py-1.5 text-xs text-[#17211D]">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <div className="relative inline-flex items-center bg-white border border-[#E5EAE6] rounded-xl px-3 py-1.5 text-xs text-[#17211D] w-full sm:w-auto">
             <Globe className="w-3.5 h-3.5 text-[#167653] mr-2 shrink-0" />
             <select
               value={selectedTarget}
               onChange={e => setSelectedTarget(e.target.value)}
-              className="bg-transparent text-xs font-semibold text-[#17211D] pr-6 focus:outline-none cursor-pointer appearance-none"
+              className="bg-transparent text-xs font-semibold text-[#17211D] pr-6 focus:outline-none cursor-pointer appearance-none w-full sm:w-auto"
             >
               <option value="all">🌐 All Monitored Targets ({availableTargets.length})</option>
               {availableTargets.map((t, idx) => (
@@ -343,14 +343,14 @@ export const Dashboard: React.FC = () => {
 
           {activeFilter && (
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#EAF5EE] text-[#167653] border border-[#C6E6D5]">
-              <span>Filtered: {activeFilter}</span>
+              <span className="truncate max-w-[180px]">Filtered: {activeFilter}</span>
               <button onClick={() => setActiveFilter(null)} className="hover:text-[#17211D] font-bold ml-1">✕</button>
             </div>
           )}
         </div>
 
         {/* Right: Timeframe Pills */}
-        <div className="flex items-center bg-white border border-[#E5EAE6] rounded-xl p-1 text-xs font-semibold">
+        <div className="flex items-center bg-white border border-[#E5EAE6] rounded-xl p-1 text-xs font-semibold self-start sm:self-auto">
           {(['7d', '30d', 'all'] as const).map(range => (
             <button
               key={range}

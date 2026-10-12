@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ShieldCheck,
@@ -12,15 +12,19 @@ import {
   FileCheck,
   Zap,
   Globe2,
-  ChevronRight
+  ChevronRight,
+  Menu,
+  X
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white text-[#17211D] flex flex-col font-sans">
       {/* Navigation Bar */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E5EAE6]">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-3">
             <div className="flex items-end gap-[3px] h-5 mr-0.5 shrink-0">
@@ -33,7 +37,7 @@ export const LandingPage: React.FC = () => {
             </div>
           </Link>
 
-          {/* Links */}
+          {/* Desktop Links */}
           <nav className="hidden md:flex items-center gap-7 text-[13px] font-medium text-[#64716A]">
             <a href="#features" className="hover:text-[#17211D] transition-colors">Features</a>
             <a href="#how-it-works" className="hover:text-[#17211D] transition-colors">How it Works</a>
@@ -42,22 +46,68 @@ export const LandingPage: React.FC = () => {
           </nav>
 
           {/* Action CTAs */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               to="/dashboard"
-              className="px-4 py-2 text-xs font-semibold text-[#17211D] hover:text-[#167653] transition-colors"
+              className="px-3 sm:px-4 py-2 text-xs font-semibold text-[#17211D] hover:text-[#167653] transition-colors"
             >
               Dashboard
             </Link>
             <Link
               to="/scans/new"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-[#167653] hover:bg-[#125e43] text-white transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold bg-[#167653] hover:bg-[#125e43] text-white transition-colors shadow-sm"
             >
-              <span>Audit Target</span>
+              <span className="hidden xs:inline">Audit Target</span>
+              <span className="xs:hidden">Audit</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              onClick={() => setMobileMenuOpen(prev => !prev)}
+              className="md:hidden p-1.5 ml-1 text-[#64716A] hover:text-[#17211D] hover:bg-[#F7F9F7] rounded-lg transition"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-[#E5EAE6] bg-white px-5 py-4 space-y-3 shadow-lg">
+            <nav className="flex flex-col space-y-2 text-sm font-medium text-[#64716A]">
+              <a
+                href="#features"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-[#17211D] transition-colors"
+              >
+                Features
+              </a>
+              <a
+                href="#how-it-works"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-[#17211D] transition-colors"
+              >
+                How it Works
+              </a>
+              <a
+                href="#transparency"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-[#17211D] transition-colors"
+              >
+                Principles
+              </a>
+              <Link
+                to="/docs"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-[#17211D] transition-colors"
+              >
+                Docs
+              </Link>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}

@@ -90,5 +90,15 @@ export const CategoryBarChart: React.FC<Props> = ({ data, width = 380, height = 
 
   }, [data, width, height]);
 
-  return <svg ref={svgRef} width={width} height={height} className="overflow-visible" />;
+  return (
+    <div className="w-full overflow-x-auto">
+      <svg
+        ref={svgRef}
+        width="100%"
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        className="overflow-visible min-w-[280px]"
+      />
+    </div>
+  );
 };

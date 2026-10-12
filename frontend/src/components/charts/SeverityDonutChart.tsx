@@ -136,8 +136,14 @@ export const SeverityDonutChart: React.FC<Props> = ({ data, width = 280, height 
   }, [data, width, height]);
 
   return (
-    <div className="relative flex flex-col items-center">
-      <svg ref={svgRef} width={width} height={height} className="overflow-visible" />
+    <div className="relative flex flex-col items-center w-full max-w-[280px] mx-auto">
+      <svg
+        ref={svgRef}
+        width="100%"
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        className="overflow-visible max-w-full"
+      />
       <div
         ref={tooltipRef}
         className="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-20 bg-white border border-[#E5EAE6] rounded-xl px-2.5 py-1.5 shadow-lg text-left"

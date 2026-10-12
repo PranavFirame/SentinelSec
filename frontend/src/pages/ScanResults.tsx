@@ -222,20 +222,22 @@ export const ScanResults: React.FC = () => {
           <div className="p-4 bg-white border border-[#E5EAE6] rounded-xl flex flex-wrap items-center justify-between gap-4 shadow-xs">
             <div className="flex flex-wrap items-center gap-3">
               {/* Severity Pills */}
-              <div className="flex items-center gap-1 bg-[#F7F9F7] p-1 rounded-lg border border-[#E5EAE6] text-xs">
-                {['all', 'critical', 'high', 'medium', 'low', 'informational'].map(s => (
-                  <button
-                    key={s}
-                    onClick={() => setSeverityFilter(s)}
-                    className={`px-2.5 py-1 rounded font-medium capitalize transition ${
-                      severityFilter === s
-                        ? 'bg-white text-[#167653] shadow-xs font-semibold'
-                        : 'text-[#64716A] hover:text-[#17211D]'
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
+              <div className="w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+                <div className="flex items-center gap-1 bg-[#F7F9F7] p-1 rounded-lg border border-[#E5EAE6] text-xs whitespace-nowrap min-w-max">
+                  {['all', 'critical', 'high', 'medium', 'low', 'informational'].map(s => (
+                    <button
+                      key={s}
+                      onClick={() => setSeverityFilter(s)}
+                      className={`px-2.5 py-1 rounded font-medium capitalize transition ${
+                        severityFilter === s
+                          ? 'bg-white text-[#167653] shadow-xs font-semibold'
+                          : 'text-[#64716A] hover:text-[#17211D]'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Category Dropdown */}
