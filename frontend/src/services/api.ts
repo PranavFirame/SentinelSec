@@ -29,8 +29,20 @@ async function handleResponse<T>(res: Response): Promise<T> {
     let errorDetail = `Request failed with status ${res.status}`;
     try {
       const body = await res.json();
-      if (body.detail) errorDetail = body.detail;
-      else if (body.message) errorDetail = body.message;
+      if (body.detail) {
+        if (Array.isArray(body.detail)) {
+          // Pydantic validation errors: array of { msg, loc, type }
+          errorDetail = body.detail
+            .map((err: any) => err.msg || (typeof err === 'string' ? err : JSON.stringify(err)))
+            .join('; ');
+        } else if (typeof body.detail === 'object') {
+          errorDetail = body.detail.message || JSON.stringify(body.detail);
+        } else {
+          errorDetail = String(body.detail);
+        }
+      } else if (body.message) {
+        errorDetail = typeof body.message === 'string' ? body.message : JSON.stringify(body.message);
+      }
     } catch {
       // response body was not json
     }
@@ -38,6 +50,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
   }
   return res.json() as Promise<T>;
 }
+
 
 // Wrapper to always send credentials (cookies) and Authorization Bearer header
 function authFetch(url: string, options: RequestInit = {}): Promise<Response> {

@@ -47,7 +47,10 @@ export const Signup: React.FC = () => {
         full_name: fullName.trim(),
         email: email.trim().toLowerCase(),
         password,
+        confirm_password: confirmPassword,
+        terms_accepted: agreeTerms,
       });
+
       navigate('/dashboard', { replace: true });
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please verify your details.');
