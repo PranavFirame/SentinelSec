@@ -632,34 +632,37 @@ export const Dashboard: React.FC = () => {
         )}
       </div>
 
-      {/* Bottom CTA & Trust Section */}
-      <div className="text-center py-6 space-y-4">
-        <h2 className="text-xl sm:text-2xl font-bold text-[#17211D]">Try the simpler way to understand your security</h2>
-        <p className="text-xs text-[#64716A] max-w-md mx-auto">
-          Audit your public web assets in seconds and review real vulnerability telemetry without the noise.
-        </p>
+      {/* Bottom CTA & Trust Section — Shown only before first audit is launched */}
+      {metrics.total_scans === 0 && (
+        <div className="text-center py-6 space-y-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#17211D]">Try the simpler way to understand your security</h2>
+          <p className="text-xs text-[#64716A] max-w-md mx-auto">
+            Audit your public web assets in seconds and review real vulnerability telemetry without the noise.
+          </p>
 
-        <div className="flex justify-center items-center gap-3 pt-1">
-          <Link
-            to="/scans/new"
-            className="px-6 py-2.5 rounded-full bg-[#167653] hover:bg-[#125e43] text-white font-semibold text-xs shadow-sm transition-all"
-          >
-            Launch fast audit
-          </Link>
-          <Link
-            to="/docs"
-            className="px-6 py-2.5 rounded-full border border-[#167653] text-[#167653] hover:bg-[#EAF5EE] font-semibold text-xs transition-all"
-          >
-            Read documentation →
-          </Link>
-        </div>
+          <div className="flex justify-center items-center gap-3 pt-1">
+            <Link
+              to="/scans/new"
+              className="px-6 py-2.5 rounded-full bg-[#167653] hover:bg-[#125e43] text-white font-semibold text-xs shadow-sm transition-all"
+            >
+              Launch fast audit
+            </Link>
+            <Link
+              to="/docs"
+              className="px-6 py-2.5 rounded-full border border-[#167653] text-[#167653] hover:bg-[#EAF5EE] font-semibold text-xs transition-all"
+            >
+              Read documentation →
+            </Link>
+          </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-5 text-[11px] text-[#64716A] pt-2">
-          <span className="flex items-center gap-1 text-[#167653]">✓ No credit card required</span>
-          <span className="flex items-center gap-1 text-[#167653]">✓ 100% open source</span>
-          <span className="flex items-center gap-1 text-[#167653]">✓ Deploy anywhere free</span>
+          <div className="flex flex-wrap justify-center items-center gap-5 text-[11px] text-[#64716A] pt-2">
+            <span className="flex items-center gap-1 text-[#167653]">✓ No credit card required</span>
+            <span className="flex items-center gap-1 text-[#167653]">✓ 100% open source</span>
+            <span className="flex items-center gap-1 text-[#167653]">✓ Deploy anywhere free</span>
+          </div>
         </div>
-      </div>
+      )}
+
 
       {/* Waveform line in brand green */}
       <div className="w-full h-10 overflow-hidden opacity-60">
