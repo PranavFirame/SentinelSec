@@ -194,35 +194,6 @@ export const Settings: React.FC = () => {
         </button>
       </form>
 
-      {/* Demo Data Management */}
-      <div className="p-6 bg-white border border-[#E5EAE6] rounded-2xl space-y-3 shadow-xs">
-        <h3 className="text-sm font-bold text-[#17211D] flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#167653]" />
-          Simulated Baseline Telemetry Management
-        </h3>
-        <p className="text-xs text-[#64716A] leading-relaxed">
-          SentinelSec supports clearly tagged simulated baseline scans so you can immediately experience telemetry dashboards, score history trends, and historical comparison tools. Demo records are tagged with <span className="font-mono text-[#167653] bg-[#EAF5EE] px-1.5 py-0.5 rounded">[Simulated Demo]</span>.
-        </p>
-
-        <div className="flex flex-wrap items-center gap-3 pt-2">
-          <button
-            onClick={handleSeed}
-            className="px-4 py-2 bg-[#EAF5EE] hover:bg-[#cbe6d5] border border-[#C6E6D5] text-[#167653] font-semibold rounded-full text-xs transition flex items-center gap-2"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Seed 3 Demo Baseline Scans</span>
-          </button>
-
-          <button
-            onClick={handleClear}
-            className="px-4 py-2 bg-white hover:bg-red-50 border border-[#E5EAE6] hover:border-red-200 text-[#64716A] hover:text-red-600 font-semibold rounded-full text-xs transition flex items-center gap-2"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Clear Demo Baseline Scans</span>
-          </button>
-        </div>
-      </div>
-
       {/* Scope Matrix */}
       <div className="p-6 bg-white border border-[#E5EAE6] rounded-2xl space-y-4 text-xs shadow-xs">
         <h3 className="text-sm font-bold text-[#17211D]">Capabilities & Safeguards Matrix</h3>

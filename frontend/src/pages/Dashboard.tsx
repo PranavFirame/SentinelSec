@@ -190,23 +190,6 @@ export const Dashboard: React.FC = () => {
             >
               Launch Fast Audit
             </Link>
-            {metrics.total_scans === 0 ? (
-              <button
-                onClick={handleSeedDemo}
-                className="px-5 py-2.5 rounded-full border border-[#167653] text-[#167653] hover:bg-[#EAF5EE] font-semibold transition-all text-xs flex items-center gap-1.5"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>See live demo →</span>
-              </button>
-            ) : metrics.is_demo_mode ? (
-              <button
-                onClick={handleClearDemo}
-                className="px-4 py-2 rounded-full border border-[#E5EAE6] text-[#64716A] hover:text-red-600 font-medium transition-all text-xs flex items-center gap-1.5"
-              >
-                <Trash2 className="w-3 h-3" />
-                <span>Clear Demo</span>
-              </button>
-            ) : null}
           </div>
         </div>
 
@@ -245,12 +228,6 @@ export const Dashboard: React.FC = () => {
               <span>Filtered: {activeFilter}</span>
               <button onClick={() => setActiveFilter(null)} className="hover:text-[#17211D] font-bold ml-1">✕</button>
             </div>
-          )}
-
-          {metrics.is_demo_mode && (
-            <span className="text-[11px] font-mono text-[#167653] bg-[#EAF5EE] px-2 py-0.5 rounded border border-[#C6E6D5]">
-              Simulated Demo Mode
-            </span>
           )}
         </div>
 

@@ -1,12 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { SearchCode, Sparkles } from 'lucide-react';
+import { SearchCode } from 'lucide-react';
 
-interface Props {
-  isDemoMode?: boolean;
-}
-
-export const Navbar: React.FC<Props> = ({ isDemoMode }) => {
+export const Navbar: React.FC = () => {
   const location = useLocation();
 
   const getPageTitle = () => {
@@ -29,13 +25,6 @@ export const Navbar: React.FC<Props> = ({ isDemoMode }) => {
         <h1 className="text-[15px] font-semibold text-[#17211D] tracking-tight m-0">
           {getPageTitle()}
         </h1>
-
-        {isDemoMode && (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#EAF5EE] text-[#167653] border border-[#C6E6D5]">
-            <Sparkles className="w-3 h-3" />
-            Demo Mode
-          </span>
-        )}
       </div>
 
       <div className="flex items-center gap-3">

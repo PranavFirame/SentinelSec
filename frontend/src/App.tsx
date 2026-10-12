@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { LandingPage } from './pages/LandingPage';
@@ -11,18 +11,8 @@ import { DependencyScan } from './pages/DependencyScan';
 import { Analytics } from './pages/Analytics';
 import { Settings } from './pages/Settings';
 import { Documentation } from './pages/Documentation';
-import { api } from './services/api';
 
 export const App: React.FC = () => {
-  const [isDemoMode, setIsDemoMode] = useState(false);
-
-  useEffect(() => {
-    // Check if demo scans exist on initial load
-    api.getAnalyticsOverview()
-      .then(metrics => setIsDemoMode(metrics.is_demo_mode))
-      .catch(() => {});
-  }, []);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -30,7 +20,7 @@ export const App: React.FC = () => {
         <Route path="/" element={<LandingPage />} />
 
         {/* Application Layout for Authenticated / App Shell routes */}
-        <Route element={<Layout isDemoMode={isDemoMode} />}>
+        <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/scans/new" element={<NewScan />} />
           <Route path="/scans/:id" element={<ScanResults />} />
