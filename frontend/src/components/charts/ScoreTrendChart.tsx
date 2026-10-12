@@ -173,7 +173,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
   return (
     <div className="relative">
       {/* Metric Toggle Buttons (Simple Analytics Style) */}
-      <div className="flex items-center justify-end gap-2 mb-2">
+      <div className="flex flex-wrap items-center justify-start sm:justify-end gap-1.5 sm:gap-2 mb-3">
         <button
           onClick={() => setMetric('score')}
           className={`px-3 py-1 rounded-full text-[11px] font-semibold transition ${
@@ -196,7 +196,15 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
         </button>
       </div>
 
-      <svg ref={svgRef} width="100%" height={height} viewBox={`0 0 ${width} ${height}`} className="overflow-visible" />
+      <div className="w-full overflow-x-auto pb-2">
+        <svg
+          ref={svgRef}
+          width="100%"
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+          className="overflow-visible min-w-[460px] sm:min-w-full"
+        />
+      </div>
       
       {/* Tooltip */}
       <div

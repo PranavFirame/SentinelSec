@@ -75,9 +75,9 @@ export const SimpleBreakdownTable: React.FC<Props> = ({
                   />
 
                   {/* Left Label */}
-                  <div className="relative z-10 flex items-center gap-2.5 min-w-0 pr-4">
+                  <div className="relative z-10 flex items-center gap-2 min-w-0 flex-1 pr-2">
                     {item.icon && <span className="text-[#64716A] shrink-0">{item.icon}</span>}
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="text-xs font-medium text-[#17211D] group-hover:text-[#167653] transition truncate">
                         {item.label}
                       </div>
@@ -87,13 +87,13 @@ export const SimpleBreakdownTable: React.FC<Props> = ({
                         </div>
                       )}
                     </div>
-                    {item.badge && <span className="shrink-0">{item.badge}</span>}
+                    {item.badge && <span className="shrink-0 hidden xs:inline-flex">{item.badge}</span>}
                   </div>
 
                   {/* Right Metric */}
-                  <div className="relative z-10 flex items-center gap-3 shrink-0 font-mono text-xs text-right">
+                  <div className="relative z-10 flex items-center gap-1.5 sm:gap-3 shrink-0 font-mono text-xs text-right">
                     <span className="font-bold text-[#17211D]">{item.value}</span>
-                    <span className="text-[10px] text-[#64716A] w-8">{pctOfTotal}%</span>
+                    <span className="text-[10px] text-[#64716A] w-7 sm:w-8">{pctOfTotal}%</span>
                   </div>
                 </div>
               );

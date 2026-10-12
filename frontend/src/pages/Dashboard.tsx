@@ -368,14 +368,14 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Hero KPI Grid (Simple Analytics Clean White Cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* KPI 1: Security Posture Score */}
-        <div className="p-5 bg-white border border-[#E5EAE6] rounded-2xl flex items-center justify-between shadow-xs">
+        <div className="p-4 sm:p-5 bg-white border border-[#E5EAE6] rounded-2xl flex items-center justify-between shadow-xs">
           <div>
             <span className="text-[10px] uppercase font-mono tracking-wider text-[#64716A] font-semibold">
               Security Score
             </span>
-            <div className="mt-1 text-3xl font-extrabold font-mono text-[#17211D] tracking-tight">
+            <div className="mt-1 text-2xl sm:text-3xl font-extrabold font-mono text-[#17211D] tracking-tight">
               {scopedScore}
               <span className="text-xs text-[#64716A] font-sans ml-1 font-normal">/ 100</span>
             </div>
@@ -388,35 +388,35 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* KPI 2: Completed Audits */}
-        <div className="p-5 bg-white border border-[#E5EAE6] rounded-2xl shadow-xs">
+        <div className="p-4 sm:p-5 bg-white border border-[#E5EAE6] rounded-2xl shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase font-mono tracking-wider text-[#64716A] font-semibold">
               Audits Executed
             </span>
             <History className="w-4 h-4 text-[#64716A]" />
           </div>
-          <div className="mt-1 text-3xl font-extrabold font-mono text-[#17211D] tracking-tight">
+          <div className="mt-1 text-2xl sm:text-3xl font-extrabold font-mono text-[#17211D] tracking-tight">
             {scopedTotalScans}
           </div>
-          <div className="flex items-center gap-2 text-[11px] text-[#64716A] mt-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-[#64716A] mt-1">
             <span className="text-[#167653] font-mono font-medium">{passedTotal} passed</span>
-            <span>•</span>
+            <span className="hidden xs:inline">•</span>
             <span className="text-red-600 font-mono font-medium">{failedTotal} failed</span>
           </div>
         </div>
 
         {/* KPI 3: Total Exposures */}
-        <div className="p-5 bg-white border border-[#E5EAE6] rounded-2xl shadow-xs">
+        <div className="p-4 sm:p-5 bg-white border border-[#E5EAE6] rounded-2xl shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase font-mono tracking-wider text-[#64716A] font-semibold">
               Active Exposures
             </span>
             <Shield className="w-4 h-4 text-[#167653]" />
           </div>
-          <div className="mt-1 text-3xl font-extrabold font-mono text-red-600 tracking-tight">
+          <div className="mt-1 text-2xl sm:text-3xl font-extrabold font-mono text-red-600 tracking-tight">
             {scopedTotalFindings}
           </div>
-          <div className="flex items-center gap-2 text-[11px] mt-1 font-mono">
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] mt-1 font-mono">
             <span className="text-red-600 font-semibold">{scopedCritical} Crit</span>
             <span className="text-[#E5EAE6]">•</span>
             <span className="text-orange-600 font-semibold">{scopedHigh} High</span>
@@ -426,7 +426,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* KPI 4: Compliance Ratio Mini-Bar */}
-        <div className="p-5 bg-white border border-[#E5EAE6] rounded-2xl flex flex-col justify-between shadow-xs">
+        <div className="p-4 sm:p-5 bg-white border border-[#E5EAE6] rounded-2xl flex flex-col justify-between shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase font-mono tracking-wider text-[#64716A] font-semibold">
               Pass Compliance
@@ -681,26 +681,28 @@ export const Dashboard: React.FC = () => {
               <Link
                 key={scan.id}
                 to={`/scans/${scan.id}`}
-                className="py-3 flex items-center justify-between hover:bg-[#F7F9F7] px-3 rounded-xl transition group"
+                className="py-3 flex items-center justify-between hover:bg-[#F7F9F7] px-2 sm:px-3 rounded-xl transition group gap-2"
               >
-                <div className="min-w-0 pr-4">
+                <div className="min-w-0 flex-1 pr-2">
                   <div className="text-xs font-mono font-medium text-[#17211D] truncate group-hover:text-[#167653] transition">
                     {scan.target}
                   </div>
-                  <div className="flex items-center gap-2 mt-1 text-[11px] text-[#64716A]">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[11px] text-[#64716A]">
                     <span className="capitalize">{scan.profile}</span>
                     <span>•</span>
                     <span>{new Date(scan.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 shrink-0">
-                  <StatusBadge status={scan.status} />
+                <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+                  <div className="scale-90 sm:scale-100 origin-right">
+                    <StatusBadge status={scan.status} />
+                  </div>
                   <div className="text-right font-mono">
                     <span className="text-xs font-bold text-[#17211D]">
                       {scan.security_score ?? '--'}
                     </span>
-                    <span className="text-[10px] text-[#64716A]"> / 100</span>
+                    <span className="text-[10px] text-[#64716A] hidden xs:inline"> / 100</span>
                   </div>
                 </div>
               </Link>
