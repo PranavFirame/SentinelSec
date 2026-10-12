@@ -32,15 +32,18 @@ app = FastAPI(
 )
 
 # CORS Configuration
-is_wildcard = "*" in settings.CORS_ORIGINS
+# Allow local dev ports and any *.onrender.com frontend deployment, plus any explicit origins
+explicit_origins = [o for o in settings.CORS_ORIGINS if o != "*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[] if is_wildcard else settings.CORS_ORIGINS,
-    allow_origin_regex=r"https?://.*" if is_wildcard else None,
+    allow_origins=explicit_origins,
+    allow_origin_regex=r"https://.*\.onrender\.com|http://localhost:\d+|http://127\.0\.0\.1:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
+
 
 
 @app.middleware("http")
