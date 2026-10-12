@@ -48,6 +48,14 @@ def is_ip_blocked(ip: ipaddress.IPv4Address | ipaddress.IPv6Address, allow_local
     if ip.is_multicast:
         return True, "Multicast addresses are prohibited."
     
+    # Well-Known NAT64 Prefix (64:ff9b::/96 - RFC 6052) translates to public IPv4 internet addresses.
+    # Python ipaddress marks 64:ff9b::/96 as is_reserved=True, but it is globally routable via DNS64/NAT64.
+    nat64_wkp = ipaddress.ip_network("64:ff9b::/96")
+    if isinstance(ip, ipaddress.IPv6Address) and ip in nat64_wkp:
+        # Extract embedded IPv4 and check if that IPv4 is blocked
+        embedded_ipv4 = ipaddress.IPv4Address(ip.packed[-4:])
+        return is_ip_blocked(embedded_ipv4, allow_local=allow_local)
+
     if ip.is_reserved:
         return True, "Reserved IP space is prohibited."
         
