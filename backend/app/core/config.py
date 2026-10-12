@@ -11,7 +11,21 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "sqlite:///./sentinelsec.db"
     
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def fix_postgres_scheme(cls, v: Any) -> str:
+        if isinstance(v, str):
+            s = v.strip()
+            # Render/Heroku provide postgres:// but SQLAlchemy 2.0 requires postgresql:// or postgresql+psycopg2://
+            if s.startswith("postgres://"):
+                return s.replace("postgres://", "postgresql+psycopg2://", 1)
+            elif s.startswith("postgresql://") and not s.startswith("postgresql+"):
+                return s.replace("postgresql://", "postgresql+psycopg2://", 1)
+            return s
+        return v
+    
     # Authentication & Security
+
     SECRET_KEY: str = Field(default="sentinelsec-dev-insecure-secret-key-32charsmin!", description="JWT signing secret")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours

@@ -15,14 +15,30 @@ const API_BASE = envApiUrl
   ? (envApiUrl.endsWith('/api') ? envApiUrl : `${envApiUrl.replace(/\/+$/, '')}/api`)
   : '/api';
 
-// Memory storage for bearer token fallback
+// Session storage for bearer token fallback across cross-origin deployments (e.g. Render)
+const TOKEN_KEY = 'sentinelsec_auth_token';
 let inMemoryToken: string | null = null;
+try {
+  inMemoryToken = localStorage.getItem(TOKEN_KEY);
+} catch {
+  // localStorage disabled or not available
+}
 
 export const setAuthToken = (token: string | null) => {
   inMemoryToken = token;
+  try {
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token);
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+    }
+  } catch {
+    // ignore
+  }
 };
 
 export const getAuthToken = () => inMemoryToken;
+
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
