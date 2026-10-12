@@ -11,9 +11,11 @@ import {
 } from '../types';
 
 const envApiUrl = import.meta.env.VITE_API_URL ? String(import.meta.env.VITE_API_URL).trim() : '';
+const DEFAULT_PROD_API = 'https://sentinelsec-backend-6uzv.onrender.com';
 const API_BASE = envApiUrl
   ? (envApiUrl.endsWith('/api') ? envApiUrl : `${envApiUrl.replace(/\/+$/, '')}/api`)
-  : '/api';
+  : (import.meta.env.PROD ? `${DEFAULT_PROD_API}/api` : '/api');
+
 
 // Session storage for bearer token fallback across cross-origin deployments (e.g. Render)
 const TOKEN_KEY = 'sentinelsec_auth_token';
