@@ -1,0 +1,29 @@
+services:
+  # FastAPI Backend Service (Free Tier)
+  - type: web
+    name: sentinelsec-backend
+    env: python
+    plan: free
+    buildCommand: "pip install -r backend/requirements.txt && python -m alembic -c backend/alembic.ini upgrade head"
+    startCommand: "uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DATABASE_URL
+        value: "sqlite:///./sentinelsec.db"
+      - key: ALLOW_LOCAL_TARGETS
+        value: "false"
+      - key: CORS_ORIGINS
+        value: "*"
+
+  # React + Vite Frontend (Free Static Site Tier)
+  - type: web
+    name: sentinelsec-frontend
+    env: static
+    plan: free
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
