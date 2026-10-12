@@ -34,5 +34,9 @@ class Scan(Base):
     target_ip = Column(String(64), nullable=True)
     error_summary = Column(Text, nullable=True)
 
+    # Multi-tenant user ownership
+    owner_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
+    owner = relationship("User", back_populates="scans")
+
     findings = relationship("Finding", back_populates="scan", cascade="all, delete-orphan", lazy="selectin")
     check_executions = relationship("CheckExecution", back_populates="scan", cascade="all, delete-orphan", lazy="selectin")

@@ -1,9 +1,17 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { SearchCode } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { SearchCode, LogOut, User as UserIcon } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -14,6 +22,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/history')) return 'Audit History';
     if (path.startsWith('/dependencies')) return 'Dependencies';
     if (path.startsWith('/analytics')) return 'Analytics';
+    if (path.startsWith('/settings/profile')) return 'Profile & Security';
     if (path.startsWith('/settings')) return 'Settings';
     if (path.startsWith('/docs')) return 'Documentation';
     return 'Dashboard';
@@ -42,7 +51,38 @@ export const Navbar: React.FC = () => {
           <SearchCode className="w-3.5 h-3.5" />
           <span>New Audit</span>
         </Link>
+
+        {/* User Account / Sign Out */}
+        {user ? (
+          <div className="flex items-center gap-2 pl-2 border-l border-[#E5EAE6]">
+            <Link
+              to="/settings/profile"
+              className="flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium text-[#17211D] hover:bg-[#F7F9F7] transition"
+              title={user.email}
+            >
+              <div className="w-6 h-6 rounded-full bg-[#EAF5EE] text-[#167653] font-bold text-[11px] flex items-center justify-center">
+                {user.full_name?.charAt(0).toUpperCase() || 'U'}
+              </div>
+              <span className="hidden sm:inline max-w-[120px] truncate">{user.full_name}</span>
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="p-1.5 text-[#64716A] hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+              title="Sign Out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <Link
+            to="/login"
+            className="px-3 py-1.5 text-xs font-semibold text-[#167653] hover:underline"
+          >
+            Sign In
+          </Link>
+        )}
       </div>
     </header>
   );
 };
+

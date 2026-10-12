@@ -1,13 +1,20 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
 from backend.app.models.scan import Scan
 from backend.app.models.finding import Finding
 from backend.app.schemas.scan import ScanComparisonResult
 
 
-def compare_scans(db: Session, scan_a_id: str, scan_b_id: str) -> ScanComparisonResult:
-    scan_a = db.query(Scan).filter(Scan.id == scan_a_id).first()
-    scan_b = db.query(Scan).filter(Scan.id == scan_b_id).first()
+def compare_scans(db: Session, scan_a_id: str, scan_b_id: str, owner_id: Optional[str] = None) -> ScanComparisonResult:
+    query_a = db.query(Scan).filter(Scan.id == scan_a_id)
+    query_b = db.query(Scan).filter(Scan.id == scan_b_id)
+    
+    if owner_id:
+        query_a = query_a.filter(Scan.owner_id == owner_id)
+        query_b = query_b.filter(Scan.owner_id == owner_id)
+
+    scan_a = query_a.first()
+    scan_b = query_b.first()
 
     if not scan_a or not scan_b:
         raise ValueError("One or both scans specified for comparison do not exist.")

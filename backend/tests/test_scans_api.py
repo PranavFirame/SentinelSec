@@ -51,7 +51,7 @@ def test_scan_creation_valid_target(client, mocker):
     assert "id" in data
 
 
-def test_scan_lifecycle_and_details(client, db_session):
+def test_scan_lifecycle_and_details(client, db_session, test_user):
     # Create scan directly in DB
     scan = Scan(
         target="https://example.com/",
@@ -60,10 +60,12 @@ def test_scan_lifecycle_and_details(client, db_session):
         security_score=85,
         checks_executed=16,
         checks_passed=14,
-        checks_failed=2
+        checks_failed=2,
+        owner_id=test_user.id
     )
     db_session.add(scan)
     db_session.flush()
+
 
     finding = Finding(
         scan_id=scan.id,
@@ -106,11 +108,12 @@ def test_scan_lifecycle_and_details(client, db_session):
     assert len(res_rep.json()["findings"]) == 1
 
 
-def test_scan_comparison(client, db_session):
-    scan_1 = Scan(target="https://example.com", profile="standard", status="completed", security_score=80)
-    scan_2 = Scan(target="https://example.com", profile="standard", status="completed", security_score=95)
+def test_scan_comparison(client, db_session, test_user):
+    scan_1 = Scan(target="https://example.com", profile="standard", status="completed", security_score=80, owner_id=test_user.id)
+    scan_2 = Scan(target="https://example.com", profile="standard", status="completed", security_score=95, owner_id=test_user.id)
     db_session.add_all([scan_1, scan_2])
     db_session.flush()
+
 
     f1 = Finding(
         scan_id=scan_1.id, rule_id="SEC-HSTS-004", title="Missing HSTS",

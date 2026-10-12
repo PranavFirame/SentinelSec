@@ -1,10 +1,11 @@
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
-import json
 
 from backend.app.core.config import settings
+from backend.app.core.auth import get_current_user
 from backend.app.db.session import get_db
+from backend.app.models.user import User
 from backend.app.models.scan import Scan
 from backend.app.schemas.report import JSONReport
 from backend.app.schemas.scan import ScanResponse, FindingSummary
@@ -15,8 +16,16 @@ router = APIRouter()
 
 
 @router.get("/{scan_id}/json", response_model=JSONReport)
-def get_scan_report_json(scan_id: str, download: bool = False, db: Session = Depends(get_db)):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
+def get_scan_report_json(
+    scan_id: str,
+    download: bool = False,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Downloads or views scan report, strictly checking scan ownership by the authenticated user.
+    """
+    scan = db.query(Scan).filter(Scan.id == scan_id, Scan.owner_id == current_user.id).first()
     if not scan:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scan not found.")
 

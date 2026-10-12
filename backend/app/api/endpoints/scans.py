@@ -5,7 +5,9 @@ from sqlalchemy import desc
 
 from backend.app.core.config import settings
 from backend.app.core.logging import logger
+from backend.app.core.auth import get_current_user
 from backend.app.db.session import get_db
+from backend.app.models.user import User
 from backend.app.models.scan import Scan
 from backend.app.models.finding import Finding
 from backend.app.schemas.scan import (
@@ -51,9 +53,13 @@ def list_available_checks():
 
 
 @router.post("", response_model=ScanResponse, status_code=status.HTTP_201_CREATED)
-async def create_scan(payload: ScanCreate, db: Session = Depends(get_db)):
+async def create_scan(
+    payload: ScanCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     """
-    Validates the target URL and authorization, initiates a new security scan job in the background.
+    Validates target URL and initiates scan owned by the authenticated user.
     """
     try:
         normalized_url, resolved_ip, port = validate_target_url(payload.target)
@@ -68,18 +74,19 @@ async def create_scan(payload: ScanCreate, db: Session = Depends(get_db)):
             detail=f"Target validation failed: {str(e)}"
         )
 
-    # Create scan record in database
+    # Associate new scan directly with the authenticated user
     new_scan = Scan(
         target=normalized_url,
         profile=payload.profile,
         status="queued",
-        target_ip=resolved_ip
+        target_ip=resolved_ip,
+        owner_id=current_user.id
     )
     db.add(new_scan)
     db.commit()
     db.refresh(new_scan)
 
-    # Launch background task
+    # Launch background scan job
     await scan_manager.start_scan_job(
         scan_id=new_scan.id,
         target=normalized_url,
@@ -100,9 +107,13 @@ def list_scans(
     status_filter: Optional[str] = Query(None, alias="status"),
     profile: Optional[str] = None,
     target_search: Optional[str] = Query(None, alias="q"),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    query = db.query(Scan)
+    """
+    Lists only scans owned by the currently authenticated user.
+    """
+    query = db.query(Scan).filter(Scan.owner_id == current_user.id)
     if status_filter:
         query = query.filter(Scan.status == status_filter)
     if profile:
@@ -120,8 +131,15 @@ def list_scans(
 
 
 @router.get("/{scan_id}", response_model=ScanResponse)
-def get_scan(scan_id: str, db: Session = Depends(get_db)):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
+def get_scan(
+    scan_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Retrieves scan details, enforcing that it belongs to the authenticated user.
+    """
+    scan = db.query(Scan).filter(Scan.id == scan_id, Scan.owner_id == current_user.id).first()
     if not scan:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scan not found.")
     
@@ -131,8 +149,15 @@ def get_scan(scan_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/{scan_id}/progress", response_model=ScanProgress)
-def get_scan_progress(scan_id: str, db: Session = Depends(get_db)):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
+def get_scan_progress(
+    scan_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Retrieves live scan progress for a scan owned by the authenticated user.
+    """
+    scan = db.query(Scan).filter(Scan.id == scan_id, Scan.owner_id == current_user.id).first()
     if not scan:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scan not found.")
 
@@ -147,7 +172,6 @@ def get_scan_progress(scan_id: str, db: Session = Depends(get_db)):
             duration_seconds=scan.duration_seconds
         )
 
-    # Running / queued state from live scan manager
     live = scan_manager.get_progress(scan_id)
     if live:
         return ScanProgress(
@@ -178,9 +202,13 @@ def get_scan_findings(
     search: Optional[str] = None,
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
+    """
+    Retrieves security findings for a scan owned by the authenticated user.
+    """
+    scan = db.query(Scan).filter(Scan.id == scan_id, Scan.owner_id == current_user.id).first()
     if not scan:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scan not found.")
 
@@ -203,24 +231,57 @@ def get_scan_findings(
 
 
 @router.post("/{scan_id}/cancel")
-def cancel_scan(scan_id: str, db: Session = Depends(get_db)):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
+def cancel_scan(
+    scan_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Cancels an active scan owned by the authenticated user.
+    """
+    scan = db.query(Scan).filter(Scan.id == scan_id, Scan.owner_id == current_user.id).first()
     if not scan:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scan not found.")
 
     if scan.status in ("completed", "failed", "cancelled"):
         return {"message": f"Scan is already in terminal state '{scan.status}'.", "status": scan.status}
 
-    success = scan_manager.cancel_scan(scan_id)
+    scan_manager.cancel_scan(scan_id)
     scan.status = "cancelled"
     db.commit()
     return {"message": "Scan cancellation requested.", "status": "cancelled"}
 
 
+@router.delete("/{scan_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_scan(
+    scan_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Deletes a scan owned by the authenticated user.
+    """
+    scan = db.query(Scan).filter(Scan.id == scan_id, Scan.owner_id == current_user.id).first()
+    if not scan:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scan not found.")
+
+    db.delete(scan)
+    db.commit()
+    return None
+
+
 @router.post("/{scan_id}/compare/{other_scan_id}", response_model=ScanComparisonResult)
-def compare_two_scans(scan_id: str, other_scan_id: str, db: Session = Depends(get_db)):
+def compare_two_scans(
+    scan_id: str,
+    other_scan_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Compares two scans, verifying both belong to the authenticated user.
+    """
     try:
-        return compare_scans(db, scan_id, other_scan_id)
+        return compare_scans(db, scan_id, other_scan_id, owner_id=current_user.id)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
@@ -232,10 +293,11 @@ async def scan_dependency_manifest(
     file: Optional[UploadFile] = File(None),
     raw_content: Optional[str] = Form(None),
     filename: Optional[str] = Form(None),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
-    Parses manifest/lockfile and checks against OSV vulnerability database.
+    Scans a dependency manifest and associates the record with the authenticated user.
     """
     if file:
         content_bytes = await file.read()
@@ -250,7 +312,6 @@ async def scan_dependency_manifest(
     scanner = DependencyScanner()
     res = await scanner.scan_manifest(fname, content_str)
 
-    # Create a persisted scan entry for dependency assessment
     dep_scan = Scan(
         target=f"manifest:{fname}",
         profile="dependency",
@@ -260,7 +321,8 @@ async def scan_dependency_manifest(
         checks_executed=res.total_dependencies,
         checks_passed=res.total_dependencies - res.vulnerabilities_found,
         checks_failed=res.vulnerabilities_found,
-        duration_seconds=res.duration_seconds
+        duration_seconds=res.duration_seconds,
+        owner_id=current_user.id
     )
     db.add(dep_scan)
     db.flush()

@@ -55,29 +55,8 @@ export const Dashboard: React.FC = () => {
     loadData();
   }, []);
 
-  const handleSeedDemo = async () => {
-    try {
-      const res = await api.seedDemoData();
-      setActionMessage(res.message);
-      await loadData();
-      setTimeout(() => setActionMessage(null), 4000);
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  const handleClearDemo = async () => {
-    try {
-      const res = await api.clearDemoData();
-      setActionMessage(res.message);
-      await loadData();
-      setTimeout(() => setActionMessage(null), 4000);
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
   if (loading) {
+
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-[#64716A]">
         <RefreshCw className="w-8 h-8 animate-spin text-[#167653] mb-3" />
@@ -157,6 +136,68 @@ export const Dashboard: React.FC = () => {
   const failedTotal = metrics.failed_checks || 0;
   const checkTotal = passedTotal + failedTotal || 1;
   const passRate = Math.round((passedTotal / checkTotal) * 100);
+
+  // Clean onboarding view for new users with 0 scans
+  if (metrics.total_scans === 0) {
+    return (
+      <div className="space-y-8 max-w-4xl mx-auto py-6">
+        <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E5EAE6] text-center space-y-6 shadow-xs">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-[#EAF5EE] border border-[#C6E6D5] flex items-center justify-center text-[#167653]">
+            <ShieldCheck className="w-8 h-8" />
+          </div>
+
+          <div className="space-y-2 max-w-lg mx-auto">
+            <span className="text-[11px] font-bold text-[#167653] tracking-widest uppercase">
+              Welcome to SentinelSec
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#17211D] tracking-tight">
+              Start by auditing an authorized website
+            </h2>
+            <p className="text-xs sm:text-sm text-[#64716A] leading-relaxed">
+              Your security workspace is ready and completely isolated. Enter a web domain you own or have explicit authorization to assess, and SentinelSec will run 16 non-destructive defensive checks.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <Link
+              to="/scans/new"
+              className="px-6 py-2.5 rounded-full bg-[#167653] hover:bg-[#125e43] text-white text-xs font-semibold shadow-xs flex items-center gap-2 transition"
+            >
+              <span>Launch Your First Security Audit</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              to="/docs"
+              className="px-6 py-2.5 rounded-full border border-[#E5EAE6] hover:bg-[#F7F9F7] text-[#17211D] text-xs font-semibold transition"
+            >
+              Review Defensive Guardrails & Docs
+            </Link>
+          </div>
+
+          <div className="pt-6 border-t border-[#E5EAE6] grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+            <div className="p-4 bg-[#F7F9F7] rounded-2xl border border-[#E5EAE6] space-y-1">
+              <div className="font-bold text-xs text-[#17211D] flex items-center gap-1.5">
+                <span className="text-[#167653]">01</span> HTTP Headers & CSP
+              </div>
+              <p className="text-[11px] text-[#64716A]">Verify defensive headers without sending intrusive payloads.</p>
+            </div>
+            <div className="p-4 bg-[#F7F9F7] rounded-2xl border border-[#E5EAE6] space-y-1">
+              <div className="font-bold text-xs text-[#17211D] flex items-center gap-1.5">
+                <span className="text-[#167653]">02</span> TLS & Cert Posture
+              </div>
+              <p className="text-[11px] text-[#64716A]">Inspect certificate validity, SAN coverage, and TLS cipher strength.</p>
+            </div>
+            <div className="p-4 bg-[#F7F9F7] rounded-2xl border border-[#E5EAE6] space-y-1">
+              <div className="font-bold text-xs text-[#17211D] flex items-center gap-1.5">
+                <span className="text-[#167653]">03</span> Isolated Telemetry
+              </div>
+              <p className="text-[11px] text-[#64716A]">All scan results are private to your authenticated user account.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto">

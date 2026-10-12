@@ -7,12 +7,13 @@ from backend.app.models.check_execution import CheckExecution
 from backend.app.scanner.risk import calculate_security_score
 
 
-def seed_demo_data(db: Session) -> Dict[str, Any]:
+def seed_demo_data(db: Session, owner_id: str | None = None) -> Dict[str, Any]:
     """
     Seeds realistic historical baseline scan records for demonstration.
     Tagged with [Simulated Demo] in target name to clearly distinguish from user scans.
     """
     now = datetime.now(timezone.utc)
+
     
     # 1. Target: Legacy Web Portal (Low score / Multiple findings)
     scan_1_date = now - timedelta(days=5)
@@ -87,9 +88,11 @@ def seed_demo_data(db: Session) -> Dict[str, Any]:
         checks_failed=4,
         checks_skipped=0,
         checks_errored=0,
-        target_ip="93.184.216.34"
+        target_ip="93.184.216.34",
+        owner_id=owner_id
     )
     db.add(scan_1)
+
     db.flush()
 
     for fd in findings_1_data:
@@ -146,9 +149,11 @@ def seed_demo_data(db: Session) -> Dict[str, Any]:
         checks_failed=0,
         checks_skipped=0,
         checks_errored=0,
-        target_ip="104.21.55.2"
+        target_ip="104.21.55.2",
+        owner_id=owner_id
     )
     db.add(scan_2)
+
     db.flush()
 
     for fd in findings_2_data:
@@ -218,9 +223,11 @@ def seed_demo_data(db: Session) -> Dict[str, Any]:
         checks_failed=3,
         checks_skipped=0,
         checks_errored=0,
-        target_ip="172.67.180.200"
+        target_ip="172.67.180.200",
+        owner_id=owner_id
     )
     db.add(scan_3)
+
     db.flush()
 
     for fd in findings_3_data:

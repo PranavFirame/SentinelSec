@@ -59,27 +59,8 @@ export const Settings: React.FC = () => {
     }
   };
 
-  const handleSeed = async () => {
-    try {
-      const res = await api.seedDemoData();
-      setSuccessMsg(res.message);
-      setTimeout(() => setSuccessMsg(null), 3500);
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  const handleClear = async () => {
-    try {
-      const res = await api.clearDemoData();
-      setSuccessMsg(res.message);
-      setTimeout(() => setSuccessMsg(null), 3500);
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
   if (loading) {
+
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-[#64716A]">
         <RefreshCw className="w-8 h-8 animate-spin text-[#167653] mb-3" />

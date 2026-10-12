@@ -63,11 +63,20 @@ def update_settings(payload: SettingsUpdate):
     }
 
 
+from backend.app.core.auth import get_current_user_optional
+from backend.app.models.user import User
+
+
 @router.post("/demo/seed")
-def seed_demo(db: Session = Depends(get_db)):
-    return seed_demo_data(db)
+def seed_demo(
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_current_user_optional)
+):
+    owner_id = current_user.id if current_user else None
+    return seed_demo_data(db, owner_id=owner_id)
 
 
 @router.post("/demo/clear")
 def clear_demo(db: Session = Depends(get_db)):
     return clear_demo_data(db)
+

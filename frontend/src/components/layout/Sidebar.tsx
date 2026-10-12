@@ -8,7 +8,8 @@ import {
   BarChart3,
   Settings,
   BookOpen,
-  Zap
+  Zap,
+  UserCheck
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
@@ -18,9 +19,11 @@ export const Sidebar: React.FC = () => {
     { to: '/history', label: 'Audit History', icon: History },
     { to: '/dependencies', label: 'Dependencies', icon: PackageSearch },
     { to: '/analytics', label: 'Analytics', icon: BarChart3 },
-    { to: '/settings', label: 'Settings', icon: Settings },
+    { to: '/settings/profile', label: 'Account Profile', icon: UserCheck },
+    { to: '/settings', label: 'Engine Settings', icon: Settings },
     { to: '/docs', label: 'Docs', icon: BookOpen },
   ];
+
 
   return (
     <aside className="w-60 bg-white border-r border-[#E5EAE6] flex flex-col justify-between shrink-0 select-none">

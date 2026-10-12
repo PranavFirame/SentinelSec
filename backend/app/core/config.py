@@ -11,6 +11,14 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "sqlite:///./sentinelsec.db"
     
+    # Authentication & Security
+    SECRET_KEY: str = Field(default="sentinelsec-dev-insecure-secret-key-32charsmin!", description="JWT signing secret")
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
+    SESSION_COOKIE_NAME: str = "sentinelsec_session"
+    COOKIE_SECURE: bool = False  # Set True in production over HTTPS
+    COOKIE_SAMESITE: str = "lax"
+    
     # Scanner Security Policies & SSRF Protection
     ALLOW_LOCAL_TARGETS: bool = Field(
         default=False,
