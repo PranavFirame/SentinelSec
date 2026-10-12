@@ -78,11 +78,11 @@ export const Analytics: React.FC = () => {
     <div className="space-y-6">
       {/* Title */}
       <div>
-        <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-emerald-400" />
+        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <BarChart3 className="w-5 h-5 text-coral" />
           Security Analytics & Telemetry Visualizations
         </h2>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-xs text-slate-400 mt-1">
           Explore interactive D3 telemetry on severity distributions, vulnerability category breakdown, and historical posture drift.
         </p>
       </div>
@@ -90,13 +90,13 @@ export const Analytics: React.FC = () => {
       {/* Row 1: Donut & Category Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Severity Donut */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col items-center">
+        <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl flex flex-col items-center shadow-sm">
           <div className="w-full flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
-              <PieChart className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <PieChart className="w-4 h-4 text-coral" />
               Severity Tier Breakdown
             </h3>
-            <span className="text-xs font-mono text-slate-500">Interactive D3.js</span>
+            <span className="text-xs font-mono text-slate-400">Interactive D3.js</span>
           </div>
 
           <SeverityDonutChart
@@ -105,38 +105,38 @@ export const Analytics: React.FC = () => {
             height={240}
           />
 
-          <div className="w-full grid grid-cols-5 gap-2 mt-4 pt-4 border-t border-slate-800/60 text-center text-xs">
+          <div className="w-full grid grid-cols-5 gap-2 mt-4 pt-4 border-t border-sa text-center text-xs">
             <div>
-              <div className="text-rose-400 font-mono font-bold">{trends.severity_distribution.critical || 0}</div>
-              <div className="text-[10px] text-slate-500">Critical</div>
+              <div className="text-coral font-mono font-bold">{trends.severity_distribution.critical || 0}</div>
+              <div className="text-[10px] text-slate-400">Critical</div>
             </div>
             <div>
-              <div className="text-orange-400 font-mono font-bold">{trends.severity_distribution.high || 0}</div>
-              <div className="text-[10px] text-slate-500">High</div>
+              <div className="text-amber-400 font-mono font-bold">{trends.severity_distribution.high || 0}</div>
+              <div className="text-[10px] text-slate-400">High</div>
             </div>
             <div>
-              <div className="text-amber-400 font-mono font-bold">{trends.severity_distribution.medium || 0}</div>
-              <div className="text-[10px] text-slate-500">Medium</div>
+              <div className="text-sky-400 font-mono font-bold">{trends.severity_distribution.medium || 0}</div>
+              <div className="text-[10px] text-slate-400">Medium</div>
             </div>
             <div>
-              <div className="text-sky-400 font-mono font-bold">{trends.severity_distribution.low || 0}</div>
-              <div className="text-[10px] text-slate-500">Low</div>
+              <div className="text-slate-300 font-mono font-bold">{trends.severity_distribution.low || 0}</div>
+              <div className="text-[10px] text-slate-400">Low</div>
             </div>
             <div>
               <div className="text-slate-400 font-mono font-bold">{trends.severity_distribution.informational || 0}</div>
-              <div className="text-[10px] text-slate-500">Info</div>
+              <div className="text-[10px] text-slate-400">Info</div>
             </div>
           </div>
         </div>
 
         {/* Category Bar Chart */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl">
+        <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-coral" />
               Category Classification Breakdown
             </h3>
-            <span className="text-xs font-mono text-slate-500">Proportions</span>
+            <span className="text-xs font-mono text-slate-400">Proportions</span>
           </div>
 
           <div className="flex items-center justify-center">
@@ -152,13 +152,13 @@ export const Analytics: React.FC = () => {
       {/* Row 2: Score Trend Chart & Passed vs Failed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Score Over Time */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl lg:col-span-2">
+        <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl lg:col-span-2 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-coral" />
               Security Score Timeline
             </h3>
-            <span className="text-xs font-mono text-slate-500">Historical Evolution</span>
+            <span className="text-xs font-mono text-slate-400">Historical Evolution</span>
           </div>
 
           <div className="flex items-center justify-center">
@@ -171,7 +171,7 @@ export const Analytics: React.FC = () => {
         </div>
 
         {/* Checks Passed vs Failed Progress Card */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col justify-between">
+        <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl flex flex-col justify-between shadow-sm">
           <div className="space-y-2">
             <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />

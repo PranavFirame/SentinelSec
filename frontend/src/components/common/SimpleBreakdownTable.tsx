@@ -15,7 +15,7 @@ interface Props {
   title: string;
   subtitle?: string;
   items: BreakdownItem[];
-  barColor?: string; // e.g. 'bg-orange-500/15' or 'bg-emerald-500/15'
+  barColor?: string; // e.g. 'bg-coral/15' or 'bg-emerald-500/15'
   accentTextColor?: string;
   onItemClick?: (item: BreakdownItem) => void;
   emptyText?: string;
@@ -26,8 +26,8 @@ export const SimpleBreakdownTable: React.FC<Props> = ({
   title,
   subtitle,
   items,
-  barColor = 'bg-orange-500/15',
-  accentTextColor = 'text-orange-400',
+  barColor = 'bg-coral-subtle',
+  accentTextColor = 'text-coral',
   onItemClick,
   emptyText = 'No data recorded',
   maxDisplay = 6,
@@ -40,7 +40,7 @@ export const SimpleBreakdownTable: React.FC<Props> = ({
   const displayedItems = showAll ? items : items.slice(0, maxDisplay);
 
   return (
-    <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
+    <div className="bg-[#1f2c2e] border border-sa rounded-2xl p-5 flex flex-col justify-between shadow-sm">
       <div>
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/60 mb-3">

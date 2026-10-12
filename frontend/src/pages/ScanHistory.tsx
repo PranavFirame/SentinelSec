@@ -90,39 +90,39 @@ export const ScanHistory: React.FC = () => {
 
         <Link
           to="/scans/new"
-          className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition shrink-0"
+          className="px-5 py-2.5 bg-coral hover:bg-rose-500 text-white font-semibold rounded-full text-xs transition shadow-sm shrink-0"
         >
           Initiate New Assessment
         </Link>
       </div>
 
       {/* Comparison Selector Widget */}
-      <div className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-xl space-y-3">
+      <div className="p-5 bg-[#1f2c2e] border border-sa rounded-2xl space-y-3 shadow-sm">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-200 uppercase tracking-wide flex items-center gap-1.5">
-            <GitCompare className="w-4 h-4 text-emerald-400" />
+          <span className="text-xs font-bold text-slate-100 uppercase tracking-wide flex items-center gap-1.5">
+            <GitCompare className="w-4 h-4 text-coral" />
             Historical Comparison Tool
           </span>
-          <span className="text-xs text-slate-500">
-            Select 2 scans from the table below using the radio buttons
+          <span className="text-xs text-slate-400">
+            Select 2 scans below using the radio selectors
           </span>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
           <div className="flex items-center gap-2">
             <span className="text-slate-400">Baseline (Scan A):</span>
-            <span className="text-emerald-400 font-bold">{compareA ? compareA.slice(0, 8) : 'Not selected'}</span>
+            <span className="text-coral font-bold">{compareA ? compareA.slice(0, 8) : 'Not selected'}</span>
           </div>
-          <span className="text-slate-600">vs</span>
+          <span className="text-slate-500">vs</span>
           <div className="flex items-center gap-2">
             <span className="text-slate-400">Target (Scan B):</span>
-            <span className="text-emerald-400 font-bold">{compareB ? compareB.slice(0, 8) : 'Not selected'}</span>
+            <span className="text-coral font-bold">{compareB ? compareB.slice(0, 8) : 'Not selected'}</span>
           </div>
 
           <button
             onClick={handleCompare}
             disabled={!compareA || !compareB || compareA === compareB || comparing}
-            className="ml-auto px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 font-bold rounded-md transition flex items-center gap-1.5"
+            className="ml-auto px-5 py-2 bg-coral hover:bg-rose-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold rounded-full transition flex items-center gap-1.5 shadow-sm"
           >
             {comparing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <GitCompare className="w-3.5 h-3.5" />}
             <span>Compare Selected Scans</span>
@@ -130,7 +130,7 @@ export const ScanHistory: React.FC = () => {
         </div>
 
         {comparisonError && (
-          <div className="p-3 bg-rose-950/40 border border-rose-800/50 rounded text-rose-300 text-xs">
+          <div className="p-3 bg-rose-950/40 border border-rose-800/50 rounded-xl text-rose-300 text-xs">
             {comparisonError}
           </div>
         )}

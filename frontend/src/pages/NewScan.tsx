@@ -167,11 +167,11 @@ export const NewScan: React.FC = () => {
       {/* Main Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Target URL Card */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-xl space-y-4">
+        <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl space-y-4 shadow-sm">
           <label className="block">
-            <span className="text-sm font-semibold text-slate-200">Target Host or URL</span>
+            <span className="text-sm font-semibold text-slate-100">Target Host or URL</span>
             <span className="text-xs text-slate-400 block mt-0.5">
-              Enter fully qualified domain or URL (e.g., https://example.com). Internal RFC 1918 and loopback IPs are blocked.
+              Enter fully qualified domain or URL (e.g., https://example.com). Private RFC 1918 and loopback IPs are blocked.
             </span>
             <div className="mt-2 relative">
               <input
@@ -180,18 +180,18 @@ export const NewScan: React.FC = () => {
                 value={target}
                 onChange={e => setTarget(e.target.value)}
                 required
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm font-mono text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#172123] border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm font-mono text-slate-100 placeholder-slate-500 focus:outline-none focus:border-coral focus:ring-1 focus:ring-coral"
               />
             </div>
           </label>
 
-          {/* Quick Target Presets for testing */}
+          {/* Quick Target Presets */}
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <span>Examples:</span>
             <button
               type="button"
               onClick={() => setTarget('https://example.com')}
-              className="text-emerald-400 hover:underline font-mono"
+              className="text-coral hover:underline font-mono"
             >
               example.com
             </button>
@@ -199,7 +199,7 @@ export const NewScan: React.FC = () => {
             <button
               type="button"
               onClick={() => setTarget('https://owasp.org')}
-              className="text-emerald-400 hover:underline font-mono"
+              className="text-coral hover:underline font-mono"
             >
               owasp.org
             </button>
@@ -207,8 +207,8 @@ export const NewScan: React.FC = () => {
         </div>
 
         {/* Assessment Profile Selection */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-xl space-y-3">
-          <span className="text-sm font-semibold text-slate-200 block">Assessment Profile</span>
+        <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl space-y-3 shadow-sm">
+          <span className="text-sm font-semibold text-slate-100 block">Assessment Profile</span>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
@@ -230,10 +230,10 @@ export const NewScan: React.FC = () => {
             ].map(p => (
               <label
                 key={p.id}
-                className={`p-3.5 rounded-lg border cursor-pointer transition flex flex-col justify-between ${
+                className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
                   profile === p.id
-                    ? 'bg-emerald-950/30 border-emerald-500/50 text-slate-100 shadow-sm'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                    ? 'bg-coral-subtle border-coral/50 text-slate-100 shadow-sm'
+                    : 'bg-[#172123] border-sa text-slate-400 hover:border-slate-600'
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -244,7 +244,7 @@ export const NewScan: React.FC = () => {
                     value={p.id}
                     checked={profile === p.id}
                     onChange={() => setProfile(p.id)}
-                    className="text-emerald-500 focus:ring-emerald-500 mt-0.5"
+                    className="accent-coral focus:ring-coral mt-0.5"
                   />
                 </div>
                 <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">{p.desc}</p>
@@ -294,14 +294,14 @@ export const NewScan: React.FC = () => {
           )}
         </div>
 
-        {/* Scan Parameters: Timeout */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-xl space-y-3">
+        {/* Probe Timeout */}
+        <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl space-y-3 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-slate-200 flex items-center gap-2">
+            <span className="text-sm font-semibold text-slate-100 flex items-center gap-2">
               <Clock className="w-4 h-4 text-slate-400" />
               Per-Request Probe Timeout: {timeoutSeconds}s
             </span>
-            <span className="text-xs font-mono text-slate-500">Max allowed: 60s</span>
+            <span className="text-xs font-mono text-slate-400">Max allowed: 60s</span>
           </div>
           <input
             type="range"
@@ -309,56 +309,56 @@ export const NewScan: React.FC = () => {
             max="60"
             value={timeoutSeconds}
             onChange={e => setTimeoutSeconds(Number(e.target.value))}
-            className="w-full accent-emerald-500"
+            className="w-full accent-coral"
           />
         </div>
 
         {/* Legal & Authorization Notice */}
-        <div className="p-5 bg-amber-950/20 border border-amber-800/40 rounded-xl space-y-3 text-xs">
-          <div className="flex items-start gap-2.5 text-amber-300">
-            <Lock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+        <div className="p-6 bg-coral-subtle border border-coral/30 rounded-2xl space-y-3 text-xs">
+          <div className="flex items-start gap-2.5 text-coral">
+            <Lock className="w-4 h-4 text-coral shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold">Authorization Notice:</span> SentinelSec executes purely defensive, non-invasive automated checks. However, scanning systems without permission may violate acceptable-use policies. You must verify ownership or explicit permission.
+              <span className="font-bold">Defensive Assessment Notice:</span> SentinelSec executes purely non-invasive automated checks. You must verify ownership or explicit permission before assessing public systems.
             </div>
           </div>
 
-          <label className="flex items-center gap-2.5 cursor-pointer pt-2 border-t border-amber-900/40 text-slate-200">
+          <label className="flex items-center gap-2.5 cursor-pointer pt-2 border-t border-coral/20 text-slate-200">
             <input
               type="checkbox"
               checked={permissionConfirmed}
               onChange={e => setPermissionConfirmed(e.target.checked)}
               required
-              className="rounded border-amber-600 text-emerald-500 focus:ring-emerald-500"
+              className="rounded border-coral text-coral focus:ring-coral accent-coral"
             />
             <span className="font-medium">
-              I certify that I am authorized to assess the specified target.
+              I certify that I am authorized to assess the specified target host.
             </span>
           </label>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="p-4 bg-rose-950/50 border border-rose-800 rounded-lg text-rose-300 text-xs flex items-center gap-2">
+          <div className="p-4 bg-rose-950/50 border border-rose-800 rounded-xl text-rose-300 text-xs flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* Submit Button */}
+        {/* Submit Pill Button */}
         <button
           type="submit"
           disabled={loading || !permissionConfirmed || !target.trim()}
-          className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-bold rounded-lg text-sm transition shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2"
+          className="w-full py-3.5 bg-coral hover:bg-rose-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-full text-sm transition shadow-lg shadow-coral/20 flex items-center justify-center gap-2"
         >
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              <span>Validating Target & Launching Worker...</span>
+              <span>Validating Target & Launching Probes...</span>
             </>
           ) : (
             <>
               <ShieldCheck className="w-4 h-4" />
-              <span>Launch Security Assessment</span>
+              <span>Launch Automated Audit</span>
             </>
           )}
         </button>

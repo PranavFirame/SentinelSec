@@ -89,13 +89,13 @@ cryptography==3.3.2`;
       </div>
 
       {/* Input Card */}
-      <div className="p-6 bg-slate-900/60 border border-slate-800/80 rounded-2xl space-y-5">
-        <div className="flex border-b border-slate-800 text-xs font-semibold">
+      <div className="p-6 bg-[#1f2c2e] border border-sa rounded-2xl space-y-5 shadow-sm">
+        <div className="flex border-b border-sa text-xs font-semibold">
           <button
             onClick={() => setActiveTab('paste')}
             className={`pb-2.5 px-4 border-b-2 transition ${
               activeTab === 'paste'
-                ? 'border-emerald-500 text-emerald-400'
+                ? 'border-coral text-coral'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -105,7 +105,7 @@ cryptography==3.3.2`;
             onClick={() => setActiveTab('upload')}
             className={`pb-2.5 px-4 border-b-2 transition ${
               activeTab === 'upload'
-                ? 'border-emerald-500 text-emerald-400'
+                ? 'border-coral text-coral'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -125,7 +125,7 @@ cryptography==3.3.2`;
                     setFilename('requirements.txt');
                     setRawContent(sampleRequirements);
                   }}
-                  className="text-emerald-400 hover:underline font-mono text-[11px]"
+                  className="text-coral hover:underline font-mono text-[11px]"
                 >
                   requirements.txt
                 </button>
@@ -136,7 +136,7 @@ cryptography==3.3.2`;
                     setFilename('package-lock.json');
                     setRawContent(samplePackageLock);
                   }}
-                  className="text-emerald-400 hover:underline font-mono text-[11px]"
+                  className="text-coral hover:underline font-mono text-[11px]"
                 >
                   package-lock.json
                 </button>
@@ -147,7 +147,7 @@ cryptography==3.3.2`;
               <select
                 value={filename}
                 onChange={e => setFilename(e.target.value)}
-                className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 font-mono"
+                className="bg-[#172123] border border-sa rounded-xl px-3 py-1.5 text-xs text-slate-200 font-mono"
               >
                 <option value="requirements.txt">Python (requirements.txt)</option>
                 <option value="package-lock.json">Node.js (package-lock.json)</option>
@@ -160,19 +160,19 @@ cryptography==3.3.2`;
               value={rawContent}
               onChange={e => setRawContent(e.target.value)}
               placeholder="Paste manifest or lockfile contents here..."
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#172123] border border-sa rounded-xl p-3 font-mono text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-coral"
             />
           </div>
         )}
 
         {activeTab === 'upload' && (
           <div className="space-y-3">
-            <label className="border-2 border-dashed border-slate-800 hover:border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-slate-950/40">
-              <UploadCloud className="w-8 h-8 text-emerald-400 mb-2" />
+            <label className="border-2 border-dashed border-slate-700/60 hover:border-coral/50 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-[#172123]/60">
+              <UploadCloud className="w-8 h-8 text-coral mb-2" />
               <span className="text-xs font-semibold text-slate-200">
                 {selectedFile ? selectedFile.name : 'Click to select package-lock.json or requirements.txt'}
               </span>
-              <span className="text-[11px] text-slate-500 mt-1">
+              <span className="text-[11px] text-slate-400 mt-1">
                 Supported: package-lock.json, requirements.txt, poetry.lock
               </span>
               <input
@@ -185,7 +185,7 @@ cryptography==3.3.2`;
         )}
 
         {error && (
-          <div className="p-3 bg-rose-950/50 border border-rose-800 rounded-lg text-rose-300 text-xs flex items-center gap-2">
+          <div className="p-3 bg-rose-950/50 border border-rose-800 rounded-xl text-rose-300 text-xs flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
             <span>{error}</span>
           </div>
@@ -194,7 +194,7 @@ cryptography==3.3.2`;
         <button
           onClick={handleScan}
           disabled={loading}
-          className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-slate-950 font-bold rounded-lg text-xs transition flex items-center justify-center gap-2"
+          className="w-full py-3 bg-coral hover:bg-rose-500 disabled:opacity-50 text-white font-bold rounded-full text-xs transition flex items-center justify-center gap-2 shadow-sm"
         >
           {loading ? (
             <>

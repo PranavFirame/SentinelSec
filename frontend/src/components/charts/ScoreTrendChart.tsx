@@ -50,11 +50,11 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .attr('y2', '100%');
 
     if (metric === 'score') {
-      gradient.append('stop').attr('offset', '0%').attr('stop-color', '#ff5c00').attr('stop-opacity', 0.35);
-      gradient.append('stop').attr('offset', '100%').attr('stop-color', '#ff5c00').attr('stop-opacity', 0.0);
+      gradient.append('stop').attr('offset', '0%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.35);
+      gradient.append('stop').attr('offset', '100%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.0);
     } else {
-      gradient.append('stop').attr('offset', '0%').attr('stop-color', '#f43f5e').attr('stop-opacity', 0.35);
-      gradient.append('stop').attr('offset', '100%').attr('stop-color', '#f43f5e').attr('stop-opacity', 0.0);
+      gradient.append('stop').attr('offset', '0%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.35);
+      gradient.append('stop').attr('offset', '100%').attr('stop-color', '#ff4d4d').attr('stop-opacity', 0.0);
     }
 
     const x = d3.scalePoint()
@@ -99,7 +99,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .attr('d', area);
 
     // Line Path
-    const lineColor = metric === 'score' ? '#ff5c00' : '#f43f5e';
+    const lineColor = '#ff4d4d';
     const line = d3.line<TrendDataPoint>()
       .x(d => x(d.date)!)
       .y(d => y(getValue(d)))
@@ -120,7 +120,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       .attr('cx', d => x(d.date)!)
       .attr('cy', d => y(getValue(d)))
       .attr('r', 4)
-      .attr('fill', '#0b0f19')
+      .attr('fill', '#172123')
       .attr('stroke', lineColor)
       .attr('stroke-width', 2)
       .attr('class', 'cursor-pointer transition-all duration-150');
@@ -181,9 +181,9 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       <div className="flex items-center justify-end gap-2 mb-2">
         <button
           onClick={() => setMetric('score')}
-          className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition ${
+          className={`px-3 py-1 rounded-full text-[11px] font-semibold transition ${
             metric === 'score'
-              ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30'
+              ? 'bg-coral/20 text-coral border border-coral/40'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -191,9 +191,9 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
         </button>
         <button
           onClick={() => setMetric('findings')}
-          className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition ${
+          className={`px-3 py-1 rounded-full text-[11px] font-semibold transition ${
             metric === 'findings'
-              ? 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+              ? 'bg-coral/20 text-coral border border-coral/40'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -206,7 +206,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ data, width = 640, height = 2
       {/* Tooltip */}
       <div
         ref={tooltipRef}
-        className="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-20 bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 shadow-xl text-left"
+        className="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-20 bg-[#1f2c2e] border border-sa rounded-xl px-3 py-2 shadow-xl text-left"
         style={{ minWidth: '100px' }}
       />
     </div>

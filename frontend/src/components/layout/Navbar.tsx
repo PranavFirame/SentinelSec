@@ -24,33 +24,46 @@ export const Navbar: React.FC<Props> = ({ isDemoMode }) => {
   };
 
   return (
-    <header className="h-16 bg-[#0b0f19]/90 backdrop-blur border-b border-slate-800/80 px-6 flex items-center justify-between sticky top-0 z-30">
+    <header className="h-16 bg-[#172123]/95 backdrop-blur border-b border-sa px-6 flex items-center justify-between sticky top-0 z-30">
       <div className="flex items-center gap-3">
+        {/* Simple Analytics triple bar mark */}
+        <div className="flex items-end gap-1 h-4 mr-1">
+          <span className="w-1 h-2.5 bg-coral rounded-xs"></span>
+          <span className="w-1 h-4 bg-coral rounded-xs"></span>
+          <span className="w-1 h-3 bg-coral rounded-xs"></span>
+        </div>
+
         <h1 className="text-base font-bold text-slate-100 tracking-tight m-0">
           {getPageTitle()}
         </h1>
 
         {isDemoMode && (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-orange-950/70 text-orange-300 border border-orange-700/60">
-            <Sparkles className="w-3 h-3 text-orange-400" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-coral/15 text-coral border border-coral/30">
+            <Sparkles className="w-3 h-3 text-coral" />
             Demo Mode Active
           </span>
         )}
       </div>
 
-      <div className="flex items-center gap-3.5">
+      <div className="flex items-center gap-3">
         {/* Simple Analytics Style Live Beacon */}
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-300 font-mono">
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#1f2c2e] border border-sa text-xs text-slate-300 font-mono">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-sm shadow-emerald-400/50" />
-          <span className="text-[11px] text-slate-400">Live Posture Active</span>
+          <span className="text-[11px] text-slate-300 font-medium">Telemetry Live</span>
         </div>
 
+        {/* Theme Sun Indicator */}
+        <span className="text-amber-400 cursor-pointer p-1 hover:text-amber-300 text-sm" title="Simple Analytics Sun">
+          ☀️
+        </span>
+
+        {/* Coral-red pill New Scan button matching Simple Analytics CTA */}
         <Link
           to="/scans/new"
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-orange-500 hover:bg-orange-400 text-slate-950 transition shadow-sm shadow-orange-500/20"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-coral hover:bg-rose-500 text-white transition-all shadow-sm"
         >
           <SearchCode className="w-3.5 h-3.5" />
-          <span>Audit URL</span>
+          <span>New Audit</span>
         </Link>
       </div>
     </header>
