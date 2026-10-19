@@ -5,7 +5,6 @@
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
 [![React 19](https://img.shields.io/badge/Frontend-React%20%2B%20Vite%20%2B%20Tailwind-61DAFB.svg)](https://react.dev/)
 [![D3.js Telemetry](https://img.shields.io/badge/Telemetry-D3.js-orange.svg)](https://d3js.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **SentinelSec / AnalyticsPro** is an automated, defensive web application security assessment, vulnerability auditing, and threat telemetry platform. Built for security engineers, system administrators, and DevOps teams, SentinelSec identifies transport-layer weaknesses, insecure HTTP configurations, public sensitive file exposures, TLS certificate risks, and known software supply chain CVEs.
 
